@@ -2,7 +2,7 @@ import uvicorn
 from fastapi import FastAPI
 from starlette.responses import RedirectResponse
 
-from db.database import Base, engine
+from app.db.database import Base, engine
 
 Base.metadata.create_all(bind=engine)
 
@@ -15,9 +15,11 @@ def init_app():
 
 app = init_app()
 
+
 @app.get("/", include_in_schema=False)
 def hello_world():
     return RedirectResponse('/docs')
+
 
 if __name__ == '__main__':
     uvicorn.run(app)
