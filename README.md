@@ -1,12 +1,12 @@
 ITBC Project 2: SINGLE-DAY TOURS BOOKING APP
 
 Description: 
-This is a Python application for a tourist agency to manage single-day tours and local walking tours. 
+This is a Python app to manage single-day tours and local walking tours. 
 
 Through the app, clients can search for available tours based on the tour date, location, whether it is a walking tour 
-or not, and the language the tour will be conducted in and sign up for the tour.
+or not, and the language the tour will be conducted in. They can also apply for the tour.
 
-Employees can create new tours, make changes to tours. 
+Employees can create new tours, create new clients, make changes to tours, assign guide to tour, assign bus carrier to tour... 
 
 All users sign in with a unique email address and password.
 
@@ -31,7 +31,7 @@ The list of endpoints that the app will implement (preliminary):
     Display available tours based on tour date
     Display available tours based on tour location
     Display available tours based on the language the tour is conducted in
-    Client sign-up for tour
+    Client application for tour
     Assign bus carrier to tour (if it is not a walking tour)
     Assign guide to tour
     Change the guide who will lead the tour
