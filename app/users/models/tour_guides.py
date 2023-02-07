@@ -20,9 +20,10 @@ class TourGuide(Base):
 
     language_id = Column(String(50), ForeignKey("languages.id"))
 
-    def __init__(self, name, last_name, user_id, employee_id, language_id):
+    def __init__(self, name, last_name, phone_number, user_id, employee_id, language_id):
         self.name = name
         self.last_name = last_name
+        self.phone_number = phone_number
         self.user_id = user_id
         self.employee_id = employee_id
         self.language_id = language_id
