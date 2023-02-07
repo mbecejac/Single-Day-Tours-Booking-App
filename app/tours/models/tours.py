@@ -1,3 +1,4 @@
+from datetime import datetime
 from uuid import uuid4
 
 from sqlalchemy import Column, String, Date, Float, Boolean, ForeignKey
@@ -22,3 +23,14 @@ class Tour(Base):
 
     bus_carrier_id = Column(String(50), ForeignKey("bus_carriers.id"), nullable=False)
 
+    def __init__(self, tour_name: str, date: str, location: str, description: str, price: float, is_walking_tour: bool,
+                 tour_language: str, tour_guide_id: str, bus_carrier_id: str):
+        self.tour_name = tour_name
+        self.date = datetime.strptime(date, "%d-%m-%Y")
+        self.location = location
+        self.description = description
+        self.price = price
+        self.is_walking_tour = is_walking_tour
+        self.tour_language = tour_language
+        self.tour_guide_id = tour_guide_id
+        self.bus_carrier_id = bus_carrier_id
