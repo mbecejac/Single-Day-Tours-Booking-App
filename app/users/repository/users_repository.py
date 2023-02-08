@@ -1,7 +1,7 @@
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from app.users.exceptions.user_exceptions import UserNotFoundException
+from app.users.exceptions import UserNotFoundException
 from app.users.models import User
 
 
@@ -36,7 +36,7 @@ class UserRepository:
     def read_user_by_id(self, user_id: str):
         user = self.db.query(User).filter(User.id == user_id).first()
         if user is None:
-            raise UserNotFoundException(f"User with provided id: {user_id} not found", 400)
+            raise UserNotFoundException(message=f"User with provided id: {user_id} not found", code=400)
         return user
 
     def read_user_by_email(self, email: str):
@@ -57,7 +57,7 @@ class UserRepository:
         try:
             user = self.db.query(User).filter(User.id == user_id).first()
             if user is None:
-                raise UserNotFoundException(f"Users with provided id: {user_id} not found.", 400)
+                raise UserNotFoundException(message=f"Users with provided id: {user_id} not found.", code=400)
             self.db.delete(user)
             self.db.commit()
             return True
