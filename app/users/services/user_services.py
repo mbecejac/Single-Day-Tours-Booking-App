@@ -5,7 +5,7 @@ from app.users.exceptions import UserInvalidPassword
 from app.users.repository import UserRepository
 
 
-class UserServices:
+class UserService:
 
     @staticmethod
     def create_user(email: str, password: str):
@@ -60,6 +60,15 @@ class UserServices:
             with SessionLocal() as db:
                 user_repository = UserRepository(db)
                 return user_repository.update_user_is_active(user_id, is_active)
+        except Exception as e:
+            return e
+
+    @staticmethod
+    def update_user_is_superuser(user_id: str, is_superuser: bool):
+        try:
+            with SessionLocal() as db:
+                user_repository = UserRepository(db)
+                return user_repository.update_user_is_superuser(user_id, is_superuser)
         except Exception as e:
             return e
 

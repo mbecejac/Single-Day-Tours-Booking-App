@@ -53,6 +53,17 @@ class UserRepository:
         except Exception as e:
             raise e
 
+    def update_user_is_superuser(self, user_id: str, is_superuser: bool):
+        try:
+            user = self.db.query(User).filter(User.id == user_id).first()
+            user.is_superuser = is_superuser
+            self.db.add(user)
+            self.db.commit()
+            self.db.refresh(user)
+            return user
+        except Exception as e:
+            raise e
+
     def delete_user_by_id(self, user_id: str):
         try:
             user = self.db.query(User).filter(User.id == user_id).first()
