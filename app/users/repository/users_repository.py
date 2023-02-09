@@ -6,7 +6,6 @@ from app.users.models import User
 
 
 class UserRepository:
-
     def __init__(self, db: Session):
         self.db = db
 

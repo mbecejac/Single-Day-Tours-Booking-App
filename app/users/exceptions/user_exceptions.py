@@ -1,4 +1,3 @@
-
 class UserNotFoundException(Exception):
     def __init__(self, message, code):
         self.message = message
@@ -6,7 +5,6 @@ class UserNotFoundException(Exception):
 
 
 class UserInvalidPassword(Exception):
-
     def __init__(self, message, code):
         self.message = message
         self.code = code

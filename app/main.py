@@ -20,8 +20,8 @@ app = init_app()
 
 @app.get("/", include_in_schema=False)
 def hello_world():
-    return RedirectResponse('/docs')
+    return RedirectResponse("/docs")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     uvicorn.run(app)

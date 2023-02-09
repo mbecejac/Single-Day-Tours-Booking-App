@@ -12,10 +12,10 @@ class TourApplication(Base):
     is_payed = Column(Boolean, default=False)
 
     client_id = Column(String(50), ForeignKey("clients.id"), nullable=False)
-    client = relationship("Client", lazy='subquery')
+    client = relationship("Client", lazy="subquery")
 
     tour_id = Column(String(50), ForeignKey("tours.id"), nullable=False)
-    tour = relationship("Tour", lazy='subquery')
+    tour = relationship("Tour", lazy="subquery")
 
     def __init__(self, is_payed, client_id, tour_id):
         self.is_payed = is_payed

@@ -10,3 +10,9 @@ repos:
         args: ["--branch", main],
         exclude: init/db
       }
+  - repo: "https://github.com/psf/black"
+    rev: 23.1.0
+    hooks:
+      - id: black
+        language_version: python3.10
+        exclude: init_db/

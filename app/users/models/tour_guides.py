@@ -14,7 +14,7 @@ class TourGuide(Base):
     phone_number = Column(String(30), nullable=False)
 
     user_id = Column(String(50), ForeignKey("users.id"), nullable=False)
-    user = relationship("User", lazy='subquery')
+    user = relationship("User", lazy="subquery")
 
     employee_id = Column(String(50), ForeignKey("employees.id"))
 

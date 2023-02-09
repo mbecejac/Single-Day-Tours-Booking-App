@@ -16,7 +16,7 @@ class Client(Base):
     city = Column(String(30))
 
     user_id = Column(String(50), ForeignKey("users.id"), nullable=False)
-    user = relationship("User", lazy='subquery')
+    user = relationship("User", lazy="subquery")
 
     def __init__(self, name, last_name, phone_number, address, city, user_id):
         self.name = name

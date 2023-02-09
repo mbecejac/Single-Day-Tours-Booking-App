@@ -6,7 +6,6 @@ from app.users.services import UserService, sign_jwt
 
 
 class UserController:
-
     @staticmethod
     def create_user(email: str, password: str):
         try:

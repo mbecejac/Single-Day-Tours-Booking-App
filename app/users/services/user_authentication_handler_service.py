@@ -9,14 +9,12 @@ from app.config import settings
 USER_SECRET = settings.USER_SECRET
 JWT_ALGORITHM = settings.ALGORITHM
 
+
 def sign_jwt(user_id: str, role: str) -> Dict[str, str]:
-    payload = {
-        "user_id": user_id,
-        "role": role,
-        "expires": time.time() + 1800
-    }
+    payload = {"user_id": user_id, "role": role, "expires": time.time() + 1800}
     token = jwt.encode(payload, USER_SECRET, algorithm=JWT_ALGORITHM)
     return {"access_token": token}
+
 
 def decode_jwt(token: str) -> Dict:
     try:

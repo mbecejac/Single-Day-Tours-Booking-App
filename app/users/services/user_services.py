@@ -6,7 +6,6 @@ from app.users.repository import UserRepository
 
 
 class UserService:
-
     @staticmethod
     def create_user(email: str, password: str):
         try:
@@ -80,7 +79,6 @@ class UserService:
                 return user_repository.delete_user_by_id(user_id)
         except Exception as e:
             raise e
-
 
     @staticmethod
     def login_user(email: str, password: str):

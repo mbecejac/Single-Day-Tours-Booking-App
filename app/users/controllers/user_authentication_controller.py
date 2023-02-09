@@ -5,7 +5,6 @@ from app.users.services import decode_jwt
 
 
 class JWTBearer(HTTPBearer):
-
     def __init__(self, role: str, auto_error: bool = True):
         super(JWTBearer, self).__init__(auto_error=auto_error)
         self.role = role
