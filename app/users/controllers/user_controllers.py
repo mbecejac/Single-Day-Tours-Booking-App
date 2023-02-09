@@ -1,7 +1,7 @@
 from fastapi import HTTPException, Response
 from sqlalchemy.exc import IntegrityError
 
-from app.users.exceptions import UserNotFoundException
+from app.users.exceptions import UserNotFoundException, UserInvalidPassword
 from app.users.services import UserService, sign_jwt
 
 
@@ -26,7 +26,6 @@ class UserController:
             raise HTTPException(status_code=400, detail=f"User with provided email: {email} already exist.")
         except Exception as e:
             raise HTTPException(status_code=500, detail=e.__str__())
-
 
     @staticmethod
     def get_all_users():
@@ -74,3 +73,14 @@ class UserController:
         except Exception as e:
             raise HTTPException(status_code=400, detail=e.__str__())
 
+    @staticmethod
+    def login_user(email: str, password: str):
+        try:
+            user = UserService.login_user(email, password)
+            if user.is_superuser:
+                return sign_jwt(user.id, "superuser")
+            return sign_jwt(user.id, "not_superuser")
+        except UserInvalidPassword as e:
+            raise HTTPException(status_code=e.code, detail=e.message)
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=e.__str__())
