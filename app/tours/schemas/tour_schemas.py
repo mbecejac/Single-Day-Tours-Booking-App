@@ -5,7 +5,7 @@ from datetime import date
 
 
 class TourSchema(BaseModel):
-    id: str
+    id: UUID4
     tour_name: str
     date: date
     location: str
@@ -48,6 +48,3 @@ class TourSchemaUpdate(BaseModel):
 
     class Config:
         orm_mode = True
-
-
-

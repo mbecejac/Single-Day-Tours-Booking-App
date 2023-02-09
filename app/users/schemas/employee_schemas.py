@@ -17,6 +17,3 @@ class EmployeeSchemaInput(BaseModel):
 
     class Config:
         orm_mode = True
-
-
-

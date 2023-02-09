@@ -14,4 +14,3 @@ class LanguageSchemaInput(BaseModel):
 
     class Config:
         orm_mode = True
-

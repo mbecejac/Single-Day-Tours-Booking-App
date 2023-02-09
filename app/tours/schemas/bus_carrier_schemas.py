@@ -35,8 +35,3 @@ class BusCarrierSchemaUpdate(BaseModel):
 
     class Config:
         orm_mode = True
-
-
-
-
-
