@@ -1,7 +1,7 @@
 from fastapi import HTTPException, Response
 from sqlalchemy.exc import IntegrityError
 
-from app.users.exceptions import UserNotFoundException, UserInvalidPassword
+from app.users.exceptions import UserInvalidPassword, UserNotFoundException
 from app.users.services import UserService, sign_jwt
 
 

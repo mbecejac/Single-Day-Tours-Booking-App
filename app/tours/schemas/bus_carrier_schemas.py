@@ -1,6 +1,6 @@
 from typing import Optional
 
-from pydantic import BaseModel, UUID4, EmailStr
+from pydantic import UUID4, BaseModel, EmailStr
 
 
 class BusCarrierSchema(BaseModel):

@@ -1,5 +1,5 @@
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from fastapi import Request, HTTPException
+from fastapi import HTTPException, Request
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from app.users.services import decode_jwt
 
@@ -28,8 +28,9 @@ class JWTBearer(HTTPBearer):
         is_token_valid: bool = False
         try:
             payload = decode_jwt(jwtoken)
-        except:
+        except Exception as e:
             payload = None
+            print(e)
         if payload:
             is_token_valid = True
         return {"valid": is_token_valid, "role": payload["role"]}

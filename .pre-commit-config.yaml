@@ -10,6 +10,16 @@ repos:
         args: ["--branch", main],
         exclude: init/db
       }
+  - repo: "https://github.com/PyCQA/flake8"
+    rev: 6.0.0
+    hooks:
+      - id: flake8
+        exclude: init_db/
+  - repo: "https://github.com/PyCQA/isort"
+    rev: 5.12.0
+    hooks:
+      - id: isort
+        exclude: init_db/
   - repo: "https://github.com/psf/black"
     rev: 23.1.0
     hooks:
