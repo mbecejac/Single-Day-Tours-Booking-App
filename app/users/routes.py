@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 
-from app.users.controllers import JWTBearer, UserController
-from app.users.schemas import UserSchema, UserSchemaInput
+from app.users.controllers import EmployeeController, JWTBearer, UserController
+from app.users.schemas import EmployeeSchema, EmployeeSchemaInput, UserSchema, UserSchemaInput
 
 user_router = APIRouter(prefix="/api/users", tags=["users"])
 
@@ -26,7 +26,7 @@ def get_all_users():
     return UserController.get_all_users()
 
 
-@user_router.get("/id", response_model=UserSchema)
+@user_router.get("/get-user/id", response_model=UserSchema)
 def get_user_by_id(user_id: str):
     return UserController.get_user_by_id(user_id)
 
@@ -49,3 +49,31 @@ def update_user_is_superuser(user_id: str, is_superuser: bool):
 @user_router.delete("/")
 def delete_user_by_id(user_id: str):
     return UserController.delete_user_by_id(user_id)
+
+
+employee_router = APIRouter(prefix="/api/employees", tags=["employees"])
+
+
+@employee_router.post("/add-new-employee", response_model=EmployeeSchema)
+def create_employee(employee: EmployeeSchemaInput):
+    return EmployeeController.create_employee(employee.user_id)
+
+
+@employee_router.get("/get-all-employees", response_model=list[EmployeeSchema])
+def get_all_employees():
+    return EmployeeController.get_all_employees()
+
+
+@employee_router.get("/get-employee/id", response_model=EmployeeSchema)
+def get_employee_by_id(employee_id: int):
+    return EmployeeController.get_employee_by_id(employee_id)
+
+
+@employee_router.get("/get-employee/user-id", response_model=EmployeeSchema)
+def get_employee_by_user_id(user_id: str):
+    return EmployeeController.get_employee_by_user_id(user_id)
+
+
+@employee_router.delete("/")
+def delete_employee_by_id(employee_id):
+    return EmployeeController.delete_employee_by_id(employee_id)

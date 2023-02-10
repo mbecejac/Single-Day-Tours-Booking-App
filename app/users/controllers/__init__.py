@@ -1,2 +1,3 @@
 from .user_authentication_controller import JWTBearer
 from .user_controllers import UserController
+from .employee_controllers import EmployeeController

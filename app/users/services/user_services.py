@@ -27,6 +27,18 @@ class UserService:
             raise e
 
     @staticmethod
+    def login_user(email: str, password: str):
+        try:
+            with SessionLocal() as db:
+                user_repository = UserRepository(db)
+                user = user_repository.read_user_by_email(email)
+                if hashlib.sha256(bytes(password, "utf-8")).hexdigest() != user.password:
+                    raise UserInvalidPassword(message="Not valid password", code=401)
+                return user
+        except Exception as e:
+            raise e
+
+    @staticmethod
     def read_all_users():
         try:
             with SessionLocal() as db:
@@ -77,17 +89,5 @@ class UserService:
             with SessionLocal() as db:
                 user_repository = UserRepository(db)
                 return user_repository.delete_user_by_id(user_id)
-        except Exception as e:
-            raise e
-
-    @staticmethod
-    def login_user(email: str, password: str):
-        try:
-            with SessionLocal() as db:
-                user_repository = UserRepository(db)
-                user = user_repository.read_user_by_email(email)
-                if hashlib.sha256(bytes(password, "utf-8")).hexdigest() != user.password:
-                    raise UserInvalidPassword(message="Not valid password", code=401)
-                return user
         except Exception as e:
             raise e

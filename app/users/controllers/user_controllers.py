@@ -27,6 +27,18 @@ class UserController:
             raise HTTPException(status_code=500, detail=e.__str__())
 
     @staticmethod
+    def login_user(email: str, password: str):
+        try:
+            user = UserService.login_user(email, password)
+            if user.is_superuser:
+                return sign_jwt(user.id, "superuser")
+            return sign_jwt(user.id, "not_superuser")
+        except UserInvalidPassword as e:
+            raise HTTPException(status_code=e.code, detail=e.message)
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=e.__str__())
+
+    @staticmethod
     def get_all_users():
         return UserService.read_all_users()
 
@@ -71,15 +83,3 @@ class UserController:
             return Response(content=f"User with id: {user_id} is deleted")
         except Exception as e:
             raise HTTPException(status_code=400, detail=e.__str__())
-
-    @staticmethod
-    def login_user(email: str, password: str):
-        try:
-            user = UserService.login_user(email, password)
-            if user.is_superuser:
-                return sign_jwt(user.id, "superuser")
-            return sign_jwt(user.id, "not_superuser")
-        except UserInvalidPassword as e:
-            raise HTTPException(status_code=e.code, detail=e.message)
-        except Exception as e:
-            raise HTTPException(status_code=500, detail=e.__str__())

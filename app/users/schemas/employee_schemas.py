@@ -1,10 +1,10 @@
-from pydantic import UUID4, BaseModel
+from pydantic import BaseModel
 
 from app.users.schemas import UserSchema
 
 
 class EmployeeSchema(BaseModel):
-    id: UUID4
+    id: int
     user_id: str
     user: UserSchema
 
