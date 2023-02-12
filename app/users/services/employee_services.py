@@ -12,7 +12,7 @@ class EmployeeService:
                 employee_check = employee_repository.read_employee_by_user_id(user_id)
                 if employee_check is None:
                     return employee_repository.create_employee(user_id)
-                raise EmployeeExceptionId(code=400, message="User is already employee.")
+                raise EmployeeExceptionId(code=400, message="User is already employee.")  # Zasto ne vraca exception??
         except Exception as e:
             raise e
 

@@ -1,4 +1,4 @@
-from fastapi import HTTPException, Response
+from fastapi import HTTPException
 from sqlalchemy.exc import IntegrityError
 
 from app.users.exceptions import UserInvalidPassword, UserNotFoundException
@@ -14,7 +14,7 @@ class UserController:
         except IntegrityError:
             raise HTTPException(status_code=400, detail=f"User with provided email: {email} already exist.")
         except Exception as e:
-            raise HTTPException(status_code=500, detail=e.__str__())
+            raise HTTPException(status_code=500, detail=str(e))
 
     @staticmethod
     def create_super_user(email: str, password: str):
@@ -24,7 +24,7 @@ class UserController:
         except IntegrityError:
             raise HTTPException(status_code=400, detail=f"User with provided email: {email} already exist.")
         except Exception as e:
-            raise HTTPException(status_code=500, detail=e.__str__())
+            raise HTTPException(status_code=500, detail=str(e))
 
     @staticmethod
     def login_user(email: str, password: str):
@@ -36,7 +36,7 @@ class UserController:
         except UserInvalidPassword as e:
             raise HTTPException(status_code=e.code, detail=e.message)
         except Exception as e:
-            raise HTTPException(status_code=500, detail=e.__str__())
+            raise HTTPException(status_code=500, detail=str(e))
 
     @staticmethod
     def get_all_users():
@@ -50,7 +50,7 @@ class UserController:
         except UserNotFoundException as e:
             raise HTTPException(status_code=e.code, detail=e.message)
         except Exception as e:
-            raise HTTPException(status_code=500, detail=e.__str__())
+            raise HTTPException(status_code=500, detail=str(e))
 
     @staticmethod
     def get_user_by_email(email: str):
@@ -60,26 +60,28 @@ class UserController:
         except UserNotFoundException as e:
             raise HTTPException(status_code=e.code, detail=e.message)
         except Exception as e:
-            raise HTTPException(status_code=500, detail=e.__str__())
+            raise HTTPException(status_code=500, detail=str(e))
 
     @staticmethod
     def update_user_is_active(user_id: str, is_active: bool):
         try:
             UserService.update_user_is_active(user_id, is_active)
         except Exception as e:
-            raise HTTPException(status_code=500, detail=e.__str__())
+            raise HTTPException(status_code=500, detail=str(e))
 
     @staticmethod
     def update_user_is_superuser(user_id: str, is_superuser: bool):
         try:
             UserService.update_user_is_superuser(user_id, is_superuser)
         except Exception as e:
-            raise HTTPException(status_code=500, detail=e.__str__())
+            raise HTTPException(status_code=500, detail=str(e))
 
     @staticmethod
     def delete_user_by_id(user_id: str):
         try:
             UserService.delete_user_by_id(user_id)
-            return Response(content=f"User with id: {user_id} is deleted")
+            return {"message": f"User with id: {user_id} is deleted"}
+        except UserNotFoundException as e:
+            raise HTTPException(status_code=e.code, detail=e.message)
         except Exception as e:
-            raise HTTPException(status_code=400, detail=e.__str__())
+            raise HTTPException(status_code=500, detail=str(e))

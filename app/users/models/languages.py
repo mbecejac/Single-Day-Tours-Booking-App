@@ -10,5 +10,5 @@ class Language(Base):
     id = Column(String(50), primary_key=True, default=uuid4)
     language_name = Column(String(30))
 
-    def __init__(self, language_name):
+    def __init__(self, language_name: str):
         self.language_name = language_name

@@ -9,7 +9,7 @@ class EmployeeRepository:
     def __init__(self, db: Session):
         self.db = db
 
-    def create_employee(self, user_id):
+    def create_employee(self, user_id: str):
         try:
             employee = Employee(user_id)
             self.db.add(employee)
