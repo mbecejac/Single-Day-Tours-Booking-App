@@ -1,7 +1,16 @@
 from fastapi import APIRouter, Depends
 
-from app.users.controllers import EmployeeController, JWTBearer, LanguageController, TourGuideController, UserController
+from app.users.controllers import (
+    CustomerController,
+    EmployeeController,
+    JWTBearer,
+    LanguageController,
+    TourGuideController,
+    UserController,
+)
 from app.users.schemas import (
+    CustomerSchema,
+    CustomerSchemaInput,
     EmployeeSchema,
     EmployeeSchemaInput,
     LanguageSchema,
@@ -57,7 +66,7 @@ def update_user_is_superuser(user_id: str, is_superuser: bool):
     return UserController.update_user_is_superuser(user_id, is_superuser)
 
 
-@user_router.delete("/")  # TODO Add dependencies JWTBearer(superuser)
+@user_router.delete("/delete-user")  # TODO Add dependencies JWTBearer(superuser)
 def delete_user_by_id(user_id: str):
     return UserController.delete_user_by_id(user_id)
 
@@ -91,7 +100,7 @@ def get_employee_by_user_id(user_id: str):
     return EmployeeController.get_employee_by_user_id(user_id)
 
 
-@employee_router.delete("/")  # TODO Add dependencies JWTBearer(superuser)
+@employee_router.delete("/delete-employee")  # TODO Add dependencies JWTBearer(superuser)
 def delete_employee_by_id(employee_id):
     return EmployeeController.delete_employee_by_id(employee_id)
 
@@ -118,7 +127,7 @@ def get_language_by_id(language_id: str):
     return LanguageController.get_language_by_id(language_id)
 
 
-@language_router.delete("/")  # TODO Add dependencies JWTBearer(superuser)
+@language_router.delete("/delete-language")  # TODO Add dependencies JWTBearer(superuser)
 def delete_language_by_id(language_id: str):
     return LanguageController.delete_language_by_id(language_id)
 
@@ -192,3 +201,55 @@ def update_tour_guide_is_employee(tour_guide_id: str, is_employee: bool):
 @tour_guide_router.delete("/delete-tour-guide")  # TODO Add dependencies JWTBearer(superuser)
 def delete_tour_guide_by_id(tour_guide_id: str):
     return TourGuideController.delete_tour_guide_by_id(tour_guide_id)
+
+
+customer_router = APIRouter(prefix="/api/customers", tags=["Customers"])
+
+
+@customer_router.post(
+    "/add-new-customer", response_model=CustomerSchema
+)  # TODO Add dependencies JWTBearer(superuser, employee)
+def create_customer(customer: CustomerSchemaInput):
+    return CustomerController.create_customer(
+        customer.name, customer.last_name, customer.phone_number, customer.address, customer.city, customer.user_id
+    )
+
+
+@customer_router.get(
+    "/get-customer-by-id", response_model=CustomerSchema
+)  # TODO Add dependencies JWTBearer(superuser, employee, tour_guide)
+def get_customer_by_id(customer_id: str):
+    return CustomerController.get_customer_by_id(customer_id)
+
+
+@customer_router.get(
+    "/get-customer-by-user-id", response_model=CustomerSchema
+)  # TODO Add dependencies JWTBearer(superuser, employee)
+def get_customer_by_user_id(user_id: str):
+    return CustomerController.get_customer_by_user_id(user_id)
+
+
+@customer_router.get(
+    "/get-customer-by-name-or-lastname", response_model=list[CustomerSchema]
+)  # TODO Add dependencies JWTBearer(superuser, employee, tour_guide)
+def get_customer_by_name_or_lastname(name_lastname: str):
+    return CustomerController.get_customer_by_name_or_lastname(name_lastname)
+
+
+@customer_router.post(
+    "/update-customer-data", response_model=CustomerSchema
+)  # TODO Add dependecies (superuser, emoployee)
+def update_customer_data(
+    customer_id: str,
+    name: str = None,
+    last_name: str = None,
+    phone_number: str = None,
+    address: str = None,
+    city: str = None,
+):
+    return CustomerController.update_customer_data(customer_id, name, last_name, phone_number, address, city)
+
+
+@customer_router.delete("/delete-customer")
+def delete_customer_by_id(customer_id: str):
+    return CustomerController.delete_customer_by_id(customer_id)

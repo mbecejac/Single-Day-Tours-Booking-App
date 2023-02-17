@@ -3,3 +3,4 @@ from .user_controllers import UserController
 from .employee_controllers import EmployeeController
 from .language_controllers import LanguageController
 from .tour_guide_controllers import TourGuideController
+from .customer_controllers import CustomerController

@@ -6,7 +6,7 @@ from sqlalchemy.orm import relationship
 from app.db import Base
 
 
-class Client(Base):
+class Customer(Base):
     __tablename__ = "clients"
 
     id = Column(String(50), primary_key=True, default=uuid4)

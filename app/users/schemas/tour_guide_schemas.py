@@ -28,15 +28,3 @@ class TourGuideSchemaInput(BaseModel):
 
     class Config:
         orm_mode = True
-
-
-# class TourGuideSchemaUpdate(BaseModel):
-#     name: Optional[str]
-#     last_name: Optional[str]
-#     phone_number: Optional[str]
-#     user_id: Optional[str]
-#     language_id: Optional[str]
-#     is_employee: Optional[bool]
-#
-#     class Config:
-#         orm_mode = True
