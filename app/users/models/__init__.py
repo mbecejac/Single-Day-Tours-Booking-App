@@ -1,4 +1,4 @@
 from .users import User
-from .clients import Client
+from .customers import Customer
 from .employees import Employee
 from .tour_guides import TourGuide

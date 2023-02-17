@@ -1,9 +1,9 @@
 from typing import Optional
 
-from pydantic import BaseModel, UUID4
+from pydantic import UUID4, BaseModel
 
 from app.tours.schemas.tour_schemas import TourSchema
-from app.users.schemas.client_schemas import ClientSchema
+from app.users.schemas.customer_schemas import ClientSchema
 
 
 class TourApplicationSchema(BaseModel):

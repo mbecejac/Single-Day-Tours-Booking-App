@@ -1,7 +1,7 @@
 from datetime import datetime
 from uuid import uuid4
 
-from sqlalchemy import Column, String, Date, Float, Boolean, ForeignKey
+from sqlalchemy import Boolean, Column, Date, Float, ForeignKey, String
 from sqlalchemy.orm import relationship
 
 from app.db import Base
@@ -19,12 +19,22 @@ class Tour(Base):
     tour_language = Column(String(30), default="Serbian")
 
     tour_guide_id = Column(String(50), ForeignKey("tour_guides.id"), nullable=False)
-    tour_guide = relationship("TourGuide", lazy='subquery')
+    tour_guide = relationship("TourGuide", lazy="subquery")
 
     bus_carrier_id = Column(String(50), ForeignKey("bus_carriers.id"), nullable=False)
 
-    def __init__(self, tour_name: str, date: str, location: str, description: str, price: float, is_walking_tour: bool,
-                 tour_language: str, tour_guide_id: str, bus_carrier_id: str):
+    def __init__(
+        self,
+        tour_name: str,
+        date: str,
+        location: str,
+        description: str,
+        price: float,
+        is_walking_tour: bool,
+        tour_language: str,
+        tour_guide_id: str,
+        bus_carrier_id: str,
+    ):
         self.tour_name = tour_name
         self.date = datetime.strptime(date, "%d-%m-%Y")
         self.location = location

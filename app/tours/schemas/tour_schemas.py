@@ -1,11 +1,11 @@
+from datetime import date
 from typing import Optional
 
-from pydantic import BaseModel, UUID4
-from datetime import date
+from pydantic import UUID4, BaseModel
 
 
 class TourSchema(BaseModel):
-    id: str
+    id: UUID4
     tour_name: str
     date: date
     location: str
@@ -48,6 +48,3 @@ class TourSchemaUpdate(BaseModel):
 
     class Config:
         orm_mode = True
-
-
-
