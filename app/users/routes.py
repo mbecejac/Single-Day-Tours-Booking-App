@@ -1,11 +1,13 @@
 from fastapi import APIRouter, Depends
 
-from app.users.controllers import EmployeeController, JWTBearer, LanguageController, UserController
+from app.users.controllers import EmployeeController, JWTBearer, LanguageController, TourGuideController, UserController
 from app.users.schemas import (
     EmployeeSchema,
     EmployeeSchemaInput,
     LanguageSchema,
     LanguageSchemaInput,
+    TourGuideSchema,
+    TourGuideSchemaInput,
     UserSchema,
     UserSchemaInput,
 )
@@ -18,7 +20,7 @@ def create_user(user: UserSchemaInput):
     return UserController.create_user(user.email, user.password)
 
 
-@user_router.post("/add-new-super-user", response_model=UserSchema, dependencies=[Depends(JWTBearer("superuser"))])
+@user_router.post("/add-new-super-user", response_model=UserSchema)  # dependencies=[Depends(JWTBearer("superuser"))])
 def create_superuser(user: UserSchemaInput):
     return UserController.create_super_user(user.email, user.password)
 
@@ -119,3 +121,74 @@ def get_language_by_id(language_id: str):
 @language_router.delete("/")  # TODO Add dependencies JWTBearer(superuser)
 def delete_language_by_id(language_id: str):
     return LanguageController.delete_language_by_id(language_id)
+
+
+tour_guide_router = APIRouter(prefix="/api/tour-guides", tags=["Tour Guides"])
+
+
+@tour_guide_router.post(
+    "/add-new-tour-guide", response_model=TourGuideSchema
+)  # TODO Add dependencies JWTBearer(superuser)
+def create_tour_guide(tour_guide: TourGuideSchemaInput):
+    return TourGuideController.create_tour_guide(
+        tour_guide.name,
+        tour_guide.last_name,
+        tour_guide.phone_number,
+        tour_guide.user_id,
+        tour_guide.language_id,
+        tour_guide.is_employee,
+    )
+
+
+@tour_guide_router.get(
+    "/get-all-tour-guides", response_model=list[TourGuideSchema]
+)  # TODO Add dependencies JWTBearer(superuser, employee)
+def get_all_tour_guides():
+    return TourGuideController.get_all_tour_guides()
+
+
+@tour_guide_router.get(
+    "/get-tour-guide-by-id", response_model=TourGuideSchema
+)  # TODO Add dependencies JWTBearer(superuser, employee)
+def get_tour_guide_by_id(tour_guide_id: str):
+    return TourGuideController.get_tour_guide_by_id(tour_guide_id)
+
+
+@tour_guide_router.get(
+    "/get-tour-guide-by-user-id", response_model=TourGuideSchema
+)  # TODO Add dependencies JWTBearer(superuser, employee)
+def get_tour_guide_by_user_id(user_id: str):
+    return TourGuideController.get_tour_guide_by_user_id(user_id)
+
+
+@tour_guide_router.get(
+    "/get-tour-guide-by-name-or-lastname", response_model=list[TourGuideSchema]
+)  # TODO Add dependencies JWTBearer(superuser, employee)
+def get_tour_guide_by_name_or_last_name(name_lastname: str):
+    return TourGuideController.get_tour_guide_by_name_or_last_name(name_lastname)
+
+
+@tour_guide_router.put(
+    "/update-tour-guide-data", response_model=TourGuideSchema
+)  # TODO Add dependencies JWTBearer(superuser, employee)
+def update_tour_guide_data(tour_guide_id: str, name: str = None, last_name: str = None, phone_number: str = None):
+    return TourGuideController.update_tour_guide_data(tour_guide_id, name, last_name, phone_number)
+
+
+@tour_guide_router.put(
+    "/update-tour-guide-language", response_model=TourGuideSchema
+)  # TODO Add dependencies JWTBearer(superuser, employee)
+def update_tour_guide_language(tour_guide_id: str, language_id: str):
+    return TourGuideController.update_tour_guide_language(tour_guide_id, language_id)
+
+
+@tour_guide_router.put(
+    "/update-tour-guide-is_employee", response_model=TourGuideSchema
+)  # TODO Add dependencies JWTBearer(superuser, employee)
+def update_tour_guide_is_employee(tour_guide_id: str, is_employee: bool):
+    return TourGuideController.update_tour_guide_is_employee(tour_guide_id, is_employee)
+
+
+@tour_guide_router.delete("/delete-tour-guide")  # TODO Add dependencies JWTBearer(superuser)
+def delete_tour_guide_by_id(tour_guide_id: str):
+    return TourGuideController.delete_tour_guide_by_id(tour_guide_id)
