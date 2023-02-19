@@ -20,6 +20,8 @@ class TourGuideRepository:
             return tour_guide
         except IntegrityError as e:
             raise e
+        except Exception as e:
+            raise e
 
     def read_all_tour_guides(self):
         return self.db.query(TourGuide).all()

@@ -1,6 +1,6 @@
 from app.db import SessionLocal
 from app.users.exceptions import LanguageExceptionName
-from app.users.repository import LanguageRepository
+from app.users.repositories import LanguageRepository
 
 
 class LanguageService:

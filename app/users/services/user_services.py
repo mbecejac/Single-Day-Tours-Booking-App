@@ -2,7 +2,7 @@ import hashlib
 
 from app.db import SessionLocal
 from app.users.exceptions import UserInvalidPassword
-from app.users.repository import UserRepository
+from app.users.repositories import UserRepository
 
 
 class UserService:

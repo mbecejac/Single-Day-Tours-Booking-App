@@ -11,22 +11,25 @@ class Tour(Base):
     __tablename__ = "tours"
     id = Column(String(50), primary_key=True, default=uuid4)
     tour_name = Column(String(50), nullable=False)
-    date = Column(Date, nullable=False)
+    tour_date = Column(Date, nullable=False)
     location = Column(String(50), nullable=False)
     description = Column(String(300))
     price = Column(Float, nullable=False)
     is_walking_tour = Column(Boolean, default=False)
-    tour_language = Column(String(30), default="Serbian")
+    tour_language = Column(String(50))
 
     tour_guide_id = Column(String(50), ForeignKey("tour_guides.id"), nullable=False)
-    tour_guide = relationship("TourGuide", lazy="subquery")
+    tour_guide = relationship("TourGuide", lazy="joined")
 
-    bus_carrier_id = Column(String(50), ForeignKey("bus_carriers.id"), nullable=False)
+    bus_carrier_id = Column(String(50), ForeignKey("bus_carriers.id"), nullable=True)
+    bus_carrier = relationship("BusCarrier", lazy="joined")
+
+    is_active = Column(Boolean, default=True)
 
     def __init__(
         self,
         tour_name: str,
-        date: str,
+        tour_date: str,
         location: str,
         description: str,
         price: float,
@@ -34,9 +37,10 @@ class Tour(Base):
         tour_language: str,
         tour_guide_id: str,
         bus_carrier_id: str,
+        is_active: bool = True,
     ):
         self.tour_name = tour_name
-        self.date = datetime.strptime(date, "%d-%m-%Y")
+        self.tour_date = datetime.strptime(tour_date, "%d-%m-%Y")
         self.location = location
         self.description = description
         self.price = price
@@ -44,3 +48,4 @@ class Tour(Base):
         self.tour_language = tour_language
         self.tour_guide_id = tour_guide_id
         self.bus_carrier_id = bus_carrier_id
+        self.is_active = is_active
