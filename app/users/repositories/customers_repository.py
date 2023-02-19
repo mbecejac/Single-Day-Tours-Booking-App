@@ -18,6 +18,8 @@ class CustomerRepository:
             return customer
         except IntegrityError as e:
             raise e
+        except Exception as e:
+            raise e
 
     def read_customer_by_id(self, customer_id: str):
         customer = self.db.query(Customer).filter(Customer.id == customer_id).first()

@@ -1,6 +1,6 @@
 from app.db import SessionLocal
 from app.users.exceptions import LanguageNotFoundException
-from app.users.repository import LanguageRepository, TourGuideRepository
+from app.users.repositories import LanguageRepository, TourGuideRepository
 
 
 class TourGuideService:

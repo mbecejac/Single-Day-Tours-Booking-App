@@ -1,5 +1,3 @@
-from typing import Optional
-
 from pydantic import UUID4, BaseModel, EmailStr
 
 
@@ -26,12 +24,13 @@ class BusCarrierSchemaInput(BaseModel):
         orm_mode = True
 
 
-class BusCarrierSchemaUpdate(BaseModel):
-    name: Optional[str]
-    email: Optional[EmailStr]
-    phone_number: Optional[str]
-    address: Optional[str]
-    city: Optional[str]
-
-    class Config:
-        orm_mode = True
+#
+# class BusCarrierSchemaUpdate(BaseModel):
+#     name: Optional[str]
+#     email: Optional[EmailStr]
+#     phone_number: Optional[str]
+#     address: Optional[str]
+#     city: Optional[str]
+#
+#     class Config:
+#         orm_mode = True

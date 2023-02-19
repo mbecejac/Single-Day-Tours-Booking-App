@@ -1,4 +1,4 @@
-"""User related repository"""
+"""User related repositories"""
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
@@ -29,6 +29,8 @@ class UserRepository:
             self.db.refresh(user)
             return user
         except IntegrityError as e:
+            raise e
+        except Exception as e:
             raise e
 
     def create_super_user(self, email, password):

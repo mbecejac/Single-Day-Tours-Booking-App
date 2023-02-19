@@ -1,5 +1,5 @@
 from app.db import SessionLocal
-from app.users.repository import CustomerRepository
+from app.users.repositories import CustomerRepository
 
 
 class CustomerService:

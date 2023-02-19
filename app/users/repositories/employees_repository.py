@@ -18,6 +18,8 @@ class EmployeeRepository:
             return employee
         except IntegrityError as e:
             raise e
+        except Exception as e:
+            raise e
 
     def read_all_employees(self):
         return self.db.query(Employee).all()

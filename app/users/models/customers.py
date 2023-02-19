@@ -7,7 +7,7 @@ from app.db import Base
 
 
 class Customer(Base):
-    __tablename__ = "clients"
+    __tablename__ = "customers"
 
     id = Column(String(50), primary_key=True, default=uuid4)
     name = Column(String(50), nullable=False)

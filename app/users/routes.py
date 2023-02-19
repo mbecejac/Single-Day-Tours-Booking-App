@@ -238,7 +238,7 @@ def get_customer_by_name_or_lastname(name_lastname: str):
 
 @customer_router.post(
     "/update-customer-data", response_model=CustomerSchema
-)  # TODO Add dependecies (superuser, emoployee)
+)  # TODO Add dependencies (superuser, emoployee)
 def update_customer_data(
     customer_id: str,
     name: str = None,
