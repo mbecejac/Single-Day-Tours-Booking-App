@@ -9,11 +9,9 @@ class TourGuideRepository:
     def __init__(self, db: Session):
         self.db = db
 
-    def create_tour_guide(
-        self, name: str, last_name: str, phone_number: str, user_id: str, language_id: str, is_employee: bool
-    ):
+    def create_tour_guide(self, name: str, last_name: str, phone_number: str, user_id: str, language_id: str):
         try:
-            tour_guide = TourGuide(name, last_name, phone_number, user_id, language_id, is_employee)
+            tour_guide = TourGuide(name, last_name, phone_number, user_id, language_id)
             self.db.add(tour_guide)
             self.db.commit()
             self.db.refresh(tour_guide)
@@ -92,14 +90,14 @@ class TourGuideRepository:
         except Exception as e:
             raise e
 
-    def update_tour_guide_is_employee(self, tour_guide_id: str, is_employee: bool):
+    def update_tour_guide_is_employee(self, tour_guide_id: str):
         try:
             tour_guide = self.db.query(TourGuide).filter(TourGuide.id == tour_guide_id).first()
             if tour_guide is None:
                 raise TourGuideNotFoundException(
                     message=f"Tour guide with provided id: {tour_guide_id} not found", code=400
                 )
-            tour_guide.is_employee = is_employee
+            tour_guide.is_employee = 1
             self.db.add(tour_guide)
             self.db.commit()
             self.db.refresh(tour_guide)

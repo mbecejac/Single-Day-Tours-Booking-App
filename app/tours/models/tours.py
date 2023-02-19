@@ -18,13 +18,13 @@ class Tour(Base):
     is_walking_tour = Column(Boolean, default=False)
 
     tour_language = Column(String(50), ForeignKey("languages.language_name"))
-    language = relationship("Language", lazy="joined")
+    language = relationship("Language", lazy="subquery")
 
     tour_guide_id = Column(String(50), ForeignKey("tour_guides.id"), nullable=False)
-    tour_guide = relationship("TourGuide", lazy="joined")
+    tour_guide = relationship("TourGuide", lazy="subquery")
 
     bus_carrier_id = Column(String(50), ForeignKey("bus_carriers.id"), nullable=True)
-    bus_carrier = relationship("BusCarrier", lazy="joined")
+    bus_carrier = relationship("BusCarrier", lazy="subquery")
 
     is_active = Column(Boolean, default=True)
 

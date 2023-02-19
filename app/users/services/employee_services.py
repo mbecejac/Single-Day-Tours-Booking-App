@@ -10,9 +10,9 @@ class EmployeeService:
             with SessionLocal() as db:
                 employee_repository = EmployeeRepository(db)
                 employee_check = employee_repository.read_employee_by_user_id(user_id)
-                if employee_check is False:
+                if employee_check is None:
                     return employee_repository.create_employee(user_id)
-                raise EmployeeExceptionId(message="User is already employee.", code=400)  # Zasto ne vraca exception??
+                raise EmployeeExceptionId(message="User is already employee.", code=400)
         except Exception as e:
             raise e
 

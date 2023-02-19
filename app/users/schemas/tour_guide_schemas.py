@@ -24,7 +24,6 @@ class TourGuideSchemaInput(BaseModel):
     phone_number: str
     user_id: str
     language_id: str
-    is_employee: bool
 
     class Config:
         orm_mode = True
