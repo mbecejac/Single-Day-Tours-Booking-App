@@ -13,6 +13,15 @@ class CustomerService:
             raise e
 
     @staticmethod
+    def read_all_customers():
+        try:
+            with SessionLocal() as db:
+                customer_repository = CustomerRepository(db)
+                return customer_repository.read_all_customers()
+        except Exception as e:
+            raise e
+
+    @staticmethod
     def read_customer_by_id(customer_id: str):
         try:
             with SessionLocal() as db:

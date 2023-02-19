@@ -6,6 +6,7 @@ from app.tours.exceptions import (
     TourExceptionLanguage,
     TourExceptionLocation,
     TourExceptionPrice,
+    TourExceptionTourGuide,
     TourExceptionWalkingTour,
     TourNotFoundException,
 )
@@ -118,6 +119,16 @@ class TourController:
             )
             return tours
         except TourExceptionActive as e:
+            raise HTTPException(status_code=e.code, detail=e.message)
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
+
+    @staticmethod
+    def get_tour_by_tour_guide_id(tour_guide_id: str):
+        try:
+            tour = TourService.read_tours_by_tour_guide_id(tour_guide_id)
+            return tour
+        except TourExceptionTourGuide as e:
             raise HTTPException(status_code=e.code, detail=e.message)
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))

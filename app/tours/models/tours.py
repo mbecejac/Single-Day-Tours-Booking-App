@@ -1,7 +1,7 @@
 from datetime import datetime
 from uuid import uuid4
 
-from sqlalchemy import Boolean, Column, Date, Float, ForeignKey, String
+from sqlalchemy import Boolean, CheckConstraint, Column, Date, Float, ForeignKey, String
 from sqlalchemy.orm import relationship
 
 from app.db import Base
@@ -27,6 +27,8 @@ class Tour(Base):
     bus_carrier = relationship("BusCarrier", lazy="subquery")
 
     is_active = Column(Boolean, default=True)
+
+    __table_args__ = CheckConstraint(tour_date >= datetime.now(), name="check_date")
 
     def __init__(
         self,

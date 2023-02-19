@@ -21,6 +21,9 @@ class CustomerRepository:
         except Exception as e:
             raise e
 
+    def read_all_customers(self):
+        return self.db.query(Customer).limit(20).all()
+
     def read_customer_by_id(self, customer_id: str):
         customer = self.db.query(Customer).filter(Customer.id == customer_id).first()
         if customer is None:

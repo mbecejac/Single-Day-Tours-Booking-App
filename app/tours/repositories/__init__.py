@@ -1,2 +1,3 @@
 from .bus_carriers_repository import BusCarrierRepository
 from .tours_repository import TourRepository
+from .tour_applications_repository import TourApplicationRepository

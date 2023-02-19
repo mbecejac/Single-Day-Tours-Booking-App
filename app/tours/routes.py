@@ -74,7 +74,7 @@ def get_all_tours():
     return TourController.get_all_tours()
 
 
-@tour_router.get("/get-tour-by_id", response_model=TourSchema)
+@tour_router.get("/get-tour-by-id", response_model=TourSchema)
 def get_tour_by_id(tour_id: str):
     return TourController.get_tour_by_id(tour_id)
 
@@ -112,6 +112,13 @@ def get_active_tours():
 @tour_router.get("/get-active-tours-by-tour-parameters", response_model=list[TourSchema])
 def get_active_tours_by_tour_parameters(tour_date: str, location: str, language: str, price: float):
     return TourController.get_active_tours_by_date_location_language_and_price(tour_date, location, language, price)
+
+
+@tour_router.get(
+    "/get-tour-by-tour-guide-id", response_model=TourSchema
+)  # TODO Add dependencies JWTBearer(superuser, employee)
+def get_tour_by_tour_guide_id(tour_guide_id: str):
+    return TourController.get_tour_by_tour_guide_id(tour_guide_id)
 
 
 @tour_router.put(

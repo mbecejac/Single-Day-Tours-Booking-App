@@ -126,6 +126,15 @@ class TourService:
             raise e
 
     @staticmethod
+    def read_tours_by_tour_guide_id(tour_guide_id: str):
+        try:
+            with SessionLocal() as db:
+                tour_repository = TourRepository(db)
+                return tour_repository.read_tours_by_tour_guide_id(tour_guide_id)
+        except Exception as e:
+            raise e
+
+    @staticmethod
     def update_tour_guide_on_tour(tour_id: str, tour_guide_id: str):
         try:
             with SessionLocal() as db:

@@ -215,6 +215,13 @@ def create_customer(customer: CustomerSchemaInput):
 
 
 @customer_router.get(
+    "/get-all-customers", response_model=list[CustomerSchema]
+)  # TODO Add dependencies JWTBearer(superuser, employee)
+def get_all_customers():
+    return CustomerController.get_all_customers()
+
+
+@customer_router.get(
     "/get-customer-by-id", response_model=CustomerSchema
 )  # TODO Add dependencies JWTBearer(superuser, employee, tour_guide)
 def get_customer_by_id(customer_id: str):
