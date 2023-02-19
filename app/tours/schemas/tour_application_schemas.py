@@ -23,12 +23,3 @@ class TourApplicationSchemaInput(BaseModel):
 
     class Config:
         orm_mode = True
-
-
-# class TourApplicationSchemaUpdate(BaseModel):
-#     is_payed: Optional[bool]
-#     client_id: Optional[str]
-#     tour_id: Optional[str]
-#
-#     class Config:
-#         orm_mode = True

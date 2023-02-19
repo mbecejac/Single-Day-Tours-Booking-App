@@ -23,19 +23,10 @@ class TourController:
         is_walking_tour: bool,
         tour_language: str,
         tour_guide_id: str,
-        bus_carrier_id: str,
     ):
         try:
             tour = TourService.create_tour(
-                tour_name,
-                tour_date,
-                location,
-                description,
-                price,
-                is_walking_tour,
-                tour_language,
-                tour_guide_id,
-                bus_carrier_id,
+                tour_name, tour_date, location, description, price, is_walking_tour, tour_language, tour_guide_id
             )
             return tour
         except Exception as e:

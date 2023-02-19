@@ -31,16 +31,15 @@ class TourRepository:
     ):
         try:
             tour = Tour(
-                tour_name,
-                tour_date,
-                location,
-                description,
-                price,
-                is_walking_tour,
-                tour_language,
-                tour_guide_id,
-                bus_carrier_id,
-                is_active=True,
+                tour_name=tour_name,
+                tour_date=tour_date,
+                location=location,
+                description=description,
+                price=price,
+                is_walking_tour=is_walking_tour,
+                tour_language=tour_language,
+                tour_guide_id=tour_guide_id,
+                bus_carrier_id=bus_carrier_id,
             )
             self.db.add(tour)
             self.db.commit()
@@ -62,51 +61,51 @@ class TourRepository:
 
     def read_tours_by_date(self, tour_date: str):
         tours = self.db.query(Tour).filter(Tour.tour_date == tour_date).limit(20).all()
-        if tours is []:
+        if not tours:
             raise TourExceptionDate(message=f"Tour with provided date: {tour_date} not found.", code=400)
         return tours
 
     def read_tours_by_location(self, location: str):
-        tours = self.db.query(Tour).filter(Tour.location == location).limit(20).all()
-        if tours is None:
+        tours = self.db.query(Tour).filter(Tour.location.ilike(f"%{location}%")).limit(20).all()
+        if not tours:
             raise TourExceptionLocation(message=f"Tour for location: {location} not found.", code=400)
         return tours
 
     def read_tours_by_max_price(self, price: float):
         tours = self.db.query(Tour).filter(Tour.price <= price).limit(20).all()
-        if tours is []:
+        if not tours:
             raise TourExceptionPrice(message=f"Tour with provided max price: {price} not found.", code=400)
         return tours
 
     def read_walking_tours(self):
-        tours = self.db.query(Tour).filter(Tour.is_walking_tour is True).limit(20).all()
-        if tours is []:
+        tours = self.db.query(Tour).filter(Tour.is_walking_tour == 1).limit(20).all()
+        if not tours:
             raise TourExceptionWalkingTour(message="Walking tour not found.", code=400)
         return tours
 
     def read_tours_by_tour_language(self, language: str):
-        tours = self.db.query(Tour).filter(Tour.language == language).limit(20).all()
-        if tours is []:
+        tours = self.db.query(Tour).filter(Tour.tour_language.ilike(f"%{language}%")).limit(20).all()
+        if not tours:
             raise TourExceptionLanguage(message=f"Tour language: {language} not found.", code=400)
         return tours
 
     def read_active_tours(self):
-        tours = self.db.query(Tour).filter(Tour.is_active is True).limit(20).all()
-        if tours is []:
+        tours = self.db.query(Tour).filter(Tour.is_active == 1).limit(20).all()
+        if not tours:
             raise TourExceptionActive(message="Not active tours found.", code=400)
         return tours
 
     def read_active_tours_by_date_location_language_and_price(
-        self, tour_date: str, location: str, language: str, price: float
+        self, tour_date: str = None, location: str = None, language: str = None, price: float = None
     ):
         tours = (
             self.db.query(Tour).filter(Tour.tour_date == tour_date).all()
-            and self.db.query(Tour).filter(Tour.location == location).all()
+            and self.db.query(Tour).filter(Tour.location.ilike(f"%{location}%")).all()
             and self.db.query(Tour).filter(Tour.price <= price).all()
-            and self.db.query(Tour).filter(Tour.language == language).all()
-            and self.db.query(Tour).filter(Tour.is_active is True).all()
+            and self.db.query(Tour).filter(Tour.tour_language.ilike(f"%{language}%")).all()
+            and self.db.query(Tour).filter(Tour.is_active == 1).all()
         )
-        if tours is []:
+        if not tours:
             raise TourExceptionActive(message="Not active tours found.", code=400)
         return tours
 

@@ -44,6 +44,10 @@ class BusCarrierRepository:
             raise BusCarrierExceptionCity(message=f"Bus carrier with provided city: {city} not found.", code=400)
         return bus_carrier
 
+    def bus_carrier_check(self, name: str):
+        bus_carrier = self.db.query(BusCarrier).filter(BusCarrier.name.ilike(f"%{name}%")).first()
+        return bus_carrier
+
     def delete_bus_carrier_by_id(self, bus_carrier_id: str):
         try:
             bus_carrier = self.db.query(BusCarrier).filter(BusCarrier.id == bus_carrier_id).first()

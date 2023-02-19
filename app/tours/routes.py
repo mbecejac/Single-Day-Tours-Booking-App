@@ -66,7 +66,6 @@ def create_tour(tour: TourSchemaInput):
         is_walking_tour=tour.is_walking_tour,
         tour_language=tour.tour_language,
         tour_guide_id=tour.tour_guide_id,
-        bus_carrier_id=tour.bus_carrier_id,
     )
 
 

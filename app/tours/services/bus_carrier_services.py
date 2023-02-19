@@ -9,8 +9,8 @@ class BusCarrierService:
         try:
             with SessionLocal() as db:
                 bus_carrier_repository = BusCarrierRepository(db)
-                bus_carrier_check = bus_carrier_repository.read_bus_carrier_by_name(name)
-                if bus_carrier_check is False:
+                bus_carrier_check = bus_carrier_repository.bus_carrier_check(name)
+                if bus_carrier_check is None:
                     return bus_carrier_repository.create_bus_carrier(name, email, phone_number, address, city)
                 raise BusCarrierExceptionName(
                     message=f"Bus carrier with name {name} already exists in database.", code=400

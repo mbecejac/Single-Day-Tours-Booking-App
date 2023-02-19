@@ -19,9 +19,10 @@ class Tour(Base):
     tour_language = Column(String(50))
 
     tour_guide_id = Column(String(50), ForeignKey("tour_guides.id"), nullable=False)
-    tour_guide = relationship("TourGuide", lazy="subquery")
+    tour_guide = relationship("TourGuide", lazy="joined")
 
     bus_carrier_id = Column(String(50), ForeignKey("bus_carriers.id"), nullable=True)
+    bus_carrier = relationship("BusCarrier", lazy="joined")
 
     is_active = Column(Boolean, default=True)
 
