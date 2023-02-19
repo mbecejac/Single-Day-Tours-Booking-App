@@ -29,6 +29,8 @@ class TourController:
                 tour_name, tour_date, location, description, price, is_walking_tour, tour_language, tour_guide_id
             )
             return tour
+        except TourExceptionLanguage as e:
+            raise HTTPException(status_code=e.code, detail=e.message)
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))
 

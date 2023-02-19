@@ -16,7 +16,9 @@ class Tour(Base):
     description = Column(String(300))
     price = Column(Float, nullable=False)
     is_walking_tour = Column(Boolean, default=False)
-    tour_language = Column(String(50))
+
+    tour_language = Column(String(50), ForeignKey("languages.language_name"))
+    language = relationship("Language", lazy="joined")
 
     tour_guide_id = Column(String(50), ForeignKey("tour_guides.id"), nullable=False)
     tour_guide = relationship("TourGuide", lazy="joined")

@@ -1,5 +1,5 @@
 from app.db import SessionLocal
-from app.tours.exceptions import BusCarrierNotFoundException
+from app.tours.exceptions import BusCarrierNotFoundException, TourExceptionLanguage
 from app.tours.repositories import BusCarrierRepository, TourRepository
 from app.users.exceptions import TourGuideNotFoundException
 from app.users.repositories import TourGuideRepository
@@ -21,17 +21,22 @@ class TourService:
         try:
             with SessionLocal() as db:
                 tour_repository = TourRepository(db)
-                return tour_repository.create_tour(
-                    tour_name,
-                    tour_date,
-                    location,
-                    description,
-                    price,
-                    is_walking_tour,
-                    tour_language,
-                    tour_guide_id,
-                    bus_carrier_id,
-                )
+                tour_guide_repository = TourGuideRepository(db)
+                tour_guide_language_check = tour_guide_repository.read_tour_guide_by_id(tour_guide_id)
+                if tour_guide_language_check.language.language_name == tour_language:
+                    return tour_repository.create_tour(
+                        tour_name,
+                        tour_date,
+                        location,
+                        description,
+                        price,
+                        is_walking_tour,
+                        tour_language,
+                        tour_guide_id,
+                        bus_carrier_id,
+                    )
+                else:
+                    raise TourExceptionLanguage(message=f"Tour guide is not speaking {tour_language}", code=404)
         except Exception as e:
             raise e
 
