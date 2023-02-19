@@ -22,7 +22,7 @@ class TourSchema(BaseModel):
 
 class TourSchemaInput(BaseModel):
     tour_name: str
-    tour_date: date
+    tour_date: str
     location: str
     description: str
     price: float

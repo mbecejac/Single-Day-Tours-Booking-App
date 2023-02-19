@@ -1,1 +1,2 @@
 from .bus_carrier_controllers import BusCarrierController
+from .tour_controllers import TourController

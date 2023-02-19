@@ -2,6 +2,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.tours.exceptions import (
+    TourExceptionActive,
     TourExceptionDate,
     TourExceptionLanguage,
     TourExceptionLocation,
@@ -66,10 +67,10 @@ class TourRepository:
         return tours
 
     def read_tours_by_location(self, location: str):
-        tour = self.db.query(Tour).filter(Tour.location == location).first()
-        if tour is None:
+        tours = self.db.query(Tour).filter(Tour.location == location).limit(20).all()
+        if tours is None:
             raise TourExceptionLocation(message=f"Tour for location: {location} not found.", code=400)
-        return tour
+        return tours
 
     def read_tours_by_max_price(self, price: float):
         tours = self.db.query(Tour).filter(Tour.price <= price).limit(20).all()
@@ -92,7 +93,21 @@ class TourRepository:
     def read_active_tours(self):
         tours = self.db.query(Tour).filter(Tour.is_active is True).limit(20).all()
         if tours is []:
-            raise TourExceptionLanguage(message="Not active tours found.", code=400)
+            raise TourExceptionActive(message="Not active tours found.", code=400)
+        return tours
+
+    def read_active_tours_by_date_location_language_and_price(
+        self, tour_date: str, location: str, language: str, price: float
+    ):
+        tours = (
+            self.db.query(Tour).filter(Tour.tour_date == tour_date).all()
+            and self.db.query(Tour).filter(Tour.location == location).all()
+            and self.db.query(Tour).filter(Tour.price <= price).all()
+            and self.db.query(Tour).filter(Tour.language == language).all()
+            and self.db.query(Tour).filter(Tour.is_active is True).all()
+        )
+        if tours is []:
+            raise TourExceptionActive(message="Not active tours found.", code=400)
         return tours
 
     def update_tour_guide_on_tour(self, tour_id: str, tour_guide_id: str = None):

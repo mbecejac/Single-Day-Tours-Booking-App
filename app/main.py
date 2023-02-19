@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from starlette.responses import RedirectResponse
 
 from app.db.database import Base, engine
-from app.tours.routes import bus_carrier_router
+from app.tours.routes import bus_carrier_router, tour_router
 from app.users.routes import customer_router, employee_router, language_router, tour_guide_router, user_router
 
 Base.metadata.create_all(bind=engine)
@@ -17,6 +17,7 @@ def init_app():
     app.include_router(tour_guide_router)
     app.include_router(customer_router)
     app.include_router(bus_carrier_router)
+    app.include_router(tour_router)
 
     return app
 

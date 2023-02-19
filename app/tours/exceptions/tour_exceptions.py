@@ -40,7 +40,7 @@ class TourExceptionLanguage(Exception):
         self.code = code
 
 
-class BusCarrierExistsException(Exception):
+class TourExceptionActive(Exception):
     def __init__(self, message, code):
         self.message = message
         self.code = code

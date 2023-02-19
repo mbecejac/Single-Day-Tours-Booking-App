@@ -16,12 +16,21 @@ class TourService:
         is_walking_tour: bool,
         tour_language: str,
         tour_guide_id: str,
+        bus_carrier: str,
     ):
         try:
             with SessionLocal() as db:
                 tour_repository = TourRepository(db)
                 return tour_repository.create_tour(
-                    tour_name, tour_date, location, description, price, is_walking_tour, tour_language, tour_guide_id
+                    tour_name,
+                    tour_date,
+                    location,
+                    description,
+                    price,
+                    is_walking_tour,
+                    tour_language,
+                    tour_guide_id,
+                    bus_carrier,
                 )
         except Exception as e:
             raise e
@@ -95,6 +104,19 @@ class TourService:
             with SessionLocal() as db:
                 tour_repository = TourRepository(db)
                 return tour_repository.read_active_tours()
+        except Exception as e:
+            raise e
+
+    @staticmethod
+    def read_active_tours_by_date_location_language_and_price(
+        tour_date: str, location: str, language: str, price: float
+    ):
+        try:
+            with SessionLocal() as db:
+                tour_repository = TourRepository(db)
+                return tour_repository.read_active_tours_by_date_location_language_and_price(
+                    tour_date, location, language, price
+                )
         except Exception as e:
             raise e
 
