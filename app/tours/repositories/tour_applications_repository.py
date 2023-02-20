@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from app.tours.exceptions import (
     TourApplicationExceptionActive,
     TourApplicationExceptionCustomer,
+    TourApplicationExceptionTour,
     TourApplicationNotFoundException,
 )
 from app.tours.models import TourApplication
@@ -55,7 +56,7 @@ class TourApplicationRepository:
     def read_all_tour_applications_by_tour_id(self, tour_id: str):
         tour_applications = self.db.query(TourApplication).filter(TourApplication.tour_id == tour_id).limit(20).all()
         if not tour_applications:
-            raise TourApplicationExceptionCustomer(
+            raise TourApplicationExceptionTour(
                 message=f"Tour application with provided Tour ID: {tour_id} not found-", code=400
             )
         return tour_applications

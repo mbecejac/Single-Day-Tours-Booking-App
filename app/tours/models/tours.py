@@ -28,7 +28,7 @@ class Tour(Base):
 
     is_active = Column(Boolean, default=True)
 
-    __table_args__ = CheckConstraint(tour_date >= datetime.now(), name="check_date")
+    __table_args__ = (CheckConstraint(tour_date >= datetime.now(), name="check_date"),)
 
     def __init__(
         self,

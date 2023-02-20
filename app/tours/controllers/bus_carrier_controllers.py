@@ -13,7 +13,7 @@ class BusCarrierController:
         except BusCarrierExceptionName as e:
             raise HTTPException(status_code=e.code, detail=e.message)
         except Exception as e:
-            raise e
+            raise HTTPException(status_code=500, detail=str(e))
 
     @staticmethod
     def get_all_bus_carriers():
@@ -27,7 +27,7 @@ class BusCarrierController:
         except BusCarrierNotFoundException as e:
             raise HTTPException(status_code=e.code, detail=e.message)
         except Exception as e:
-            raise e
+            raise HTTPException(status_code=500, detail=str(e))
 
     @staticmethod
     def get_bus_carrier_by_name(name: str):
@@ -37,7 +37,7 @@ class BusCarrierController:
         except BusCarrierExceptionName as e:
             raise HTTPException(status_code=e.code, detail=e.message)
         except Exception as e:
-            raise e
+            raise HTTPException(status_code=500, detail=str(e))
 
     @staticmethod
     def get_bus_carrier_by_city(city: str):
@@ -47,7 +47,7 @@ class BusCarrierController:
         except BusCarrierExceptionCity as e:
             raise HTTPException(status_code=e.code, detail=e.message)
         except Exception as e:
-            raise e
+            raise HTTPException(status_code=500, detail=str(e))
 
     @staticmethod
     def delete_bus_carrier_by_id(bus_carrier_id: str):

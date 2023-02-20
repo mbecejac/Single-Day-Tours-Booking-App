@@ -1,15 +1,17 @@
 from fastapi import HTTPException
+from pydantic import EmailStr
 from sqlalchemy.exc import IntegrityError
 
 from app.users.exceptions import UserInvalidPassword, UserNotFoundException
-from app.users.services import UserService, sign_jwt
+from app.users.services import EmailService, UserService, sign_jwt
 
 
 class UserController:
     @staticmethod
-    def create_user(email: str, password: str):
+    def create_user(email: EmailStr, password: str):
         try:
             user = UserService.create_user(email, password)
+            EmailService.send_email_after_user_is_create(email)
             return user
         except IntegrityError:
             raise HTTPException(status_code=400, detail=f"User with provided email: {email} already exist.")
