@@ -71,8 +71,8 @@ class TourApplicationController:
     @staticmethod
     def get_not_payed_active_tour_applications():
         try:
-            tour_application = TourApplicationService.read_not_payed_active_tour_applications()
-            return tour_application
+            tour_applications = TourApplicationService.read_not_payed_active_tour_applications()
+            return tour_applications
         except TourApplicationExceptionActive as e:
             raise HTTPException(status_code=e.code, detail=e.message)
         except Exception as e:

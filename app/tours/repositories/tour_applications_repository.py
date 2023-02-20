@@ -17,9 +17,9 @@ class TourApplicationRepository:
     def create_tour_application(self, customer_id: str, tour_id: str):
         try:
             tour_application = TourApplication(customer_id, tour_id)
-            self.db.add(TourApplication)
+            self.db.add(tour_application)
             self.db.commit()
-            self.db.refresh(TourApplication)
+            self.db.refresh(tour_application)
             return tour_application
         except IntegrityError as e:
             raise e

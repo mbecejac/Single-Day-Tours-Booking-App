@@ -1,10 +1,12 @@
+from datetime import date
+
 from pydantic import UUID4, BaseModel
 
 
 class TourSchema(BaseModel):
     id: UUID4
     tour_name: str
-    tour_date: str
+    tour_date: date
     location: str
     description: str
     price: float
