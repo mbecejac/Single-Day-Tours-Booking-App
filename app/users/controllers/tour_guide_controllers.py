@@ -6,13 +6,9 @@ from app.users.services import TourGuideService
 
 class TourGuideController:
     @staticmethod
-    def create_tour_guide(
-        name: str, last_name: str, phone_number: str, user_id: str, language_id: str, is_employee: bool
-    ):
+    def create_tour_guide(name: str, last_name: str, phone_number: str, user_id: str, language_id: str):
         try:
-            tour_guide = TourGuideService.create_tour_guide(
-                name, last_name, phone_number, user_id, language_id, is_employee
-            )
+            tour_guide = TourGuideService.create_tour_guide(name, last_name, phone_number, user_id, language_id)
             return tour_guide
         except TourGuideExistsException as e:
             raise HTTPException(status_code=e.code, detail=e.message)
@@ -76,9 +72,9 @@ class TourGuideController:
             raise HTTPException(status_code=500, detail=str(e))
 
     @staticmethod
-    def update_tour_guide_is_employee(tour_guide_id: str, is_employee: bool):
+    def update_tour_guide_is_employee(tour_guide_id: str):
         try:
-            tour_guide = TourGuideService.update_tour_guide_is_employee(tour_guide_id, is_employee)
+            tour_guide = TourGuideService.update_tour_guide_is_employee(tour_guide_id)
             return tour_guide
         except TourGuideNotFoundException as e:
             raise HTTPException(status_code=e.code, detail=e.message)

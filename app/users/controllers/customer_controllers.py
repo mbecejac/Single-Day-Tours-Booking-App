@@ -16,6 +16,10 @@ class CustomerController:
             raise HTTPException(status_code=500, detail=str(e))
 
     @staticmethod
+    def get_all_customers():
+        return CustomerService.read_all_customers()
+
+    @staticmethod
     def get_customer_by_id(customer_id: str):
         try:
             customer = CustomerService.read_customer_by_id(customer_id)

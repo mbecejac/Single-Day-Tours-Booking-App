@@ -1,19 +1,15 @@
 from app.db import SessionLocal
 from app.users.exceptions import LanguageNotFoundException
-from app.users.repositories import LanguageRepository, TourGuideRepository
+from app.users.repositories import EmployeeRepository, LanguageRepository, TourGuideRepository
 
 
 class TourGuideService:
     @staticmethod
-    def create_tour_guide(
-        name: str, last_name: str, phone_number: str, user_id: str, language_id: str, is_employee: bool
-    ):
+    def create_tour_guide(name: str, last_name: str, phone_number: str, user_id: str, language_id: str):
         try:
             with SessionLocal() as db:
                 tour_guide_repository = TourGuideRepository(db)
-                return tour_guide_repository.create_tour_guide(
-                    name, last_name, phone_number, user_id, language_id, is_employee
-                )
+                return tour_guide_repository.create_tour_guide(name, last_name, phone_number, user_id, language_id)
         except Exception as e:
             raise e
 
@@ -77,11 +73,15 @@ class TourGuideService:
             raise e
 
     @staticmethod
-    def update_tour_guide_is_employee(tour_guide_id: str, is_employee: bool):
+    def update_tour_guide_is_employee(tour_guide_id: str):
         try:
             with SessionLocal() as db:
                 tour_guide_repository = TourGuideRepository(db)
-                return tour_guide_repository.update_tour_guide_is_employee(tour_guide_id, is_employee)
+                employee_repository = EmployeeRepository(db)
+                tour_guide = tour_guide_repository.read_tour_guide_by_id(tour_guide_id)
+                check_is_employee = employee_repository.read_employee_by_user_id(tour_guide.user.id)
+                if check_is_employee:
+                    return tour_guide_repository.update_tour_guide_is_employee(tour_guide_id)
         except Exception as e:
             raise e
 

@@ -109,6 +109,14 @@ class TourRepository:
             raise TourExceptionActive(message="Not active tours found.", code=400)
         return tours
 
+    def read_tours_by_tour_guide_id(self, tour_guide_id: str):
+        tours = self.db.query(Tour).filter(Tour.tour_guide_id == tour_guide_id).limit(20).all()
+        if not tours:
+            raise TourNotFoundException(
+                message=f"Tours guided by tour guide provided ID: {tour_guide_id} not found.", code=400
+            )
+        return tours
+
     def update_tour_guide_on_tour(self, tour_id: str, tour_guide_id: str = None):
         try:
             tour = self.db.query(Tour).filter(Tour.id == tour_id).first()

@@ -1,7 +1,7 @@
 from datetime import datetime
 from uuid import uuid4
 
-from sqlalchemy import Boolean, Column, Date, Float, ForeignKey, String
+from sqlalchemy import Boolean, CheckConstraint, Column, Date, Float, ForeignKey, String
 from sqlalchemy.orm import relationship
 
 from app.db import Base
@@ -16,15 +16,19 @@ class Tour(Base):
     description = Column(String(300))
     price = Column(Float, nullable=False)
     is_walking_tour = Column(Boolean, default=False)
-    tour_language = Column(String(50))
+
+    tour_language = Column(String(50), ForeignKey("languages.id"))
+    language = relationship("Language", lazy="subquery")
 
     tour_guide_id = Column(String(50), ForeignKey("tour_guides.id"), nullable=False)
-    tour_guide = relationship("TourGuide", lazy="joined")
+    tour_guide = relationship("TourGuide", lazy="subquery")
 
     bus_carrier_id = Column(String(50), ForeignKey("bus_carriers.id"), nullable=True)
-    bus_carrier = relationship("BusCarrier", lazy="joined")
+    bus_carrier = relationship("BusCarrier", lazy="subquery")
 
     is_active = Column(Boolean, default=True)
+
+    __table_args__ = (CheckConstraint(tour_date >= datetime.now(), name="check_date"),)
 
     def __init__(
         self,

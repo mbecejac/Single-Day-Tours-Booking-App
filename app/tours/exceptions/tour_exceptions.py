@@ -44,3 +44,9 @@ class TourExceptionActive(Exception):
     def __init__(self, message, code):
         self.message = message
         self.code = code
+
+
+class TourExceptionTourGuide(Exception):
+    def __init__(self, message, code):
+        self.message = message
+        self.code = code

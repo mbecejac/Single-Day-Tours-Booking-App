@@ -145,7 +145,6 @@ def create_tour_guide(tour_guide: TourGuideSchemaInput):
         tour_guide.phone_number,
         tour_guide.user_id,
         tour_guide.language_id,
-        tour_guide.is_employee,
     )
 
 
@@ -194,8 +193,8 @@ def update_tour_guide_language(tour_guide_id: str, language_id: str):
 @tour_guide_router.put(
     "/update-tour-guide-is_employee", response_model=TourGuideSchema
 )  # TODO Add dependencies JWTBearer(superuser, employee)
-def update_tour_guide_is_employee(tour_guide_id: str, is_employee: bool):
-    return TourGuideController.update_tour_guide_is_employee(tour_guide_id, is_employee)
+def update_tour_guide_is_employee(tour_guide_id: str):
+    return TourGuideController.update_tour_guide_is_employee(tour_guide_id)
 
 
 @tour_guide_router.delete("/delete-tour-guide")  # TODO Add dependencies JWTBearer(superuser)
@@ -213,6 +212,13 @@ def create_customer(customer: CustomerSchemaInput):
     return CustomerController.create_customer(
         customer.name, customer.last_name, customer.phone_number, customer.address, customer.city, customer.user_id
     )
+
+
+@customer_router.get(
+    "/get-all-customers", response_model=list[CustomerSchema]
+)  # TODO Add dependencies JWTBearer(superuser, employee)
+def get_all_customers():
+    return CustomerController.get_all_customers()
 
 
 @customer_router.get(

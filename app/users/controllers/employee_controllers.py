@@ -1,7 +1,6 @@
 from fastapi import HTTPException
-from sqlalchemy.exc import IntegrityError
 
-from app.users.exceptions import EmployeeNotFoundException
+from app.users.exceptions import EmployeeExceptionId, EmployeeNotFoundException
 from app.users.services import EmployeeService
 
 
@@ -11,7 +10,7 @@ class EmployeeController:
         try:
             employee = EmployeeService.create_employee(user_id)
             return employee
-        except IntegrityError:
+        except EmployeeExceptionId:
             raise HTTPException(status_code=400, detail=f"Employee with user id: {user_id}, already exist.")
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))
