@@ -8,6 +8,7 @@ from app.tours.schemas import (
     TourApplicationSchemaInput,
     TourSchema,
     TourSchemaInput,
+    TourSchemaPreview,
 )
 
 bus_carrier_router = APIRouter(prefix="/api/bus-carriers", tags=["Bus Carriers"])
@@ -76,47 +77,47 @@ def create_tour(tour: TourSchemaInput):
     )
 
 
-@tour_router.get("/get-all-tours", response_model=list[TourSchema])
+@tour_router.get("/get-all-tours", response_model=list[TourSchemaPreview])
 def get_all_tours():
     return TourController.get_all_tours()
 
 
-@tour_router.get("/get-tour-by-id", response_model=TourSchema)
+@tour_router.get("/get-tour-by-id", response_model=TourSchemaPreview)
 def get_tour_by_id(tour_id: str):
     return TourController.get_tour_by_id(tour_id)
 
 
-@tour_router.get("/get-tours-by-date", response_model=list[TourSchema])
+@tour_router.get("/get-tours-by-date", response_model=list[TourSchemaPreview])
 def get_tours_by_date(date: str):
     return TourController.get_tours_by_date(date)
 
 
-@tour_router.get("/get-tours-by-location", response_model=list[TourSchema])
+@tour_router.get("/get-tours-by-location", response_model=list[TourSchemaPreview])
 def get_tours_by_location(location: str):
     return TourController.get_tours_by_location(location)
 
 
-@tour_router.get("/get-tours-by-max-price", response_model=list[TourSchema])
+@tour_router.get("/get-tours-by-max-price", response_model=list[TourSchemaPreview])
 def get_tours_by_max_price(price: float):
     return TourController.get_tours_by_max_price(price)
 
 
-@tour_router.get("/get-walking-tours", response_model=list[TourSchema])
+@tour_router.get("/get-walking-tours", response_model=list[TourSchemaPreview])
 def get_walking_tours():
     return TourController.get_walking_tours()
 
 
-@tour_router.get("/get-tours-by-language", response_model=list[TourSchema])
+@tour_router.get("/get-tours-by-language", response_model=list[TourSchemaPreview])
 def get_tours_by_tour_language(language: str):
     return TourController.get_tours_by_tour_language(language)
 
 
-@tour_router.get("/get-active-tours", response_model=list[TourSchema])
+@tour_router.get("/get-active-tours", response_model=list[TourSchemaPreview])
 def get_active_tours():
     return TourController.get_active_tours()
 
 
-@tour_router.get("/get-active-tours-by-tour-parameters", response_model=list[TourSchema])
+@tour_router.get("/get-active-tours-by-tour-parameters", response_model=list[TourSchemaPreview])
 def get_active_tours_by_tour_parameters(tour_date: str, location: str, language: str, price: float):
     return TourController.get_active_tours_by_date_location_language_and_price(tour_date, location, language, price)
 
@@ -199,6 +200,20 @@ def get_all_tour_applications_by_customer_id(customer_id: str):
 )  # TODO Add dependencies JWTBearer(superuser, employee, tour_guide)
 def get_all_tour_applications_by_tour_id(tour_id: str):
     return TourApplicationController.get_all_tour_applications_by_tour_id(tour_id)
+
+
+@tour_application_router.get(
+    "/count-number-of-applications-on-tour"
+)  # TODO Add dependencies JWTBearer(superuser, employee, tour_guide)
+def count_number_of_applications_by_tour_id(tour_id: str):
+    return TourApplicationController.count_number_of_applications_by_tour_id(tour_id)
+
+
+@tour_application_router.get(
+    "/get-passenger-list-by-tour-id"
+)  # TODO Add dependencies JWTBearer(superuser, employee, tour_guide)
+def get_passenger_list_by_tour_id(tour_id: str):
+    return TourApplicationController.get_passenger_list_by_tour_id(tour_id)
 
 
 @tour_application_router.get(

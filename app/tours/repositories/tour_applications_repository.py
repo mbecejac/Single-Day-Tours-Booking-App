@@ -61,6 +61,15 @@ class TourApplicationRepository:
             )
         return tour_applications
 
+    def count_number_of_applications_by_tour_id(self, tour_id: str):
+        tour_applications = self.db.query(TourApplication).filter(TourApplication.tour_id == tour_id).limit(20).all()
+        if not tour_applications:
+            raise TourApplicationExceptionTour(
+                message=f"Tour application with provided Tour ID: {tour_id} not found-", code=400
+            )
+        no_of_applications = len(tour_applications)
+        return no_of_applications
+
     def read_not_payed_active_tour_applications(self):
         tour_applications = (
             self.db.query(TourApplication).filter(TourApplication.is_payed == 0).all()

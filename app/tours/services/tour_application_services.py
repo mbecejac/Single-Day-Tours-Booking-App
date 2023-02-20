@@ -13,7 +13,9 @@ class TourApplicationService:
                 tour_application_repository = TourApplicationRepository(db)
                 tour_repository = TourRepository(db)
                 customer_repository = CustomerRepository(db)
+                # check if tour exists
                 tour_check = tour_repository.read_tour_by_id(tour_id)
+                # check if customer exists
                 customer_check = customer_repository.read_customer_by_id(customer_id)
                 if tour_check.id == tour_id and customer_check.id == customer_id:
                     return tour_application_repository.create_tour_application(customer_id, tour_id)
@@ -66,6 +68,35 @@ class TourApplicationService:
             with SessionLocal() as db:
                 tour_application_repository = TourApplicationRepository(db)
                 return tour_application_repository.read_all_tour_applications_by_tour_id(tour_id)
+        except Exception as e:
+            raise e
+
+    @staticmethod
+    def count_number_of_applications_by_tour_id(tour_id: str):
+        try:
+            with SessionLocal() as db:
+                tour_application_repository = TourApplicationRepository(db)
+                return tour_application_repository.count_number_of_applications_by_tour_id(tour_id)
+        except Exception as e:
+            raise e
+
+    @staticmethod
+    def get_passenger_list_by_tour_id(tour_id: str):
+        try:
+            with SessionLocal() as db:
+                tour_application_repository = TourApplicationRepository(db)
+                applications = tour_application_repository.read_all_tour_applications_by_tour_id(tour_id)
+                passenger_list = []
+                for application in applications:
+                    passenger_list.append(
+                        [
+                            application.customer_id,
+                            application.customer.name,
+                            application.customer.last_name,
+                            application.customer.phone_number,
+                        ]
+                    )
+                return passenger_list
         except Exception as e:
             raise e
 

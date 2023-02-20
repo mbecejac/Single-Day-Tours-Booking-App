@@ -1,4 +1,5 @@
 from fastapi import HTTPException, Response
+from sqlalchemy.exc import IntegrityError
 
 from app.tours.exceptions import (
     TourApplicationExceptionActive,
@@ -17,6 +18,10 @@ class TourApplicationController:
         try:
             tour_application = TourApplicationService.create_tour_application(customer_id, tour_id)
             return tour_application
+        except IntegrityError:
+            raise HTTPException(
+                status_code=400, detail=f"Customer with provided id: {customer_id} already applied for this tour."
+            )
         except TourNotFoundException as e:
             raise HTTPException(status_code=e.code, detail=e.message)
         except CustomerNotFoundException as e:
@@ -61,7 +66,27 @@ class TourApplicationController:
     @staticmethod
     def get_all_tour_applications_by_tour_id(tour_id: str):
         try:
-            tour_application = TourApplicationService.read_tour_applications_by_tour_id()
+            tour_application = TourApplicationService.read_tour_applications_by_tour_id(tour_id)
+            return tour_application
+        except TourApplicationExceptionTour as e:
+            raise HTTPException(status_code=e.code, detail=e.message)
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
+
+    @staticmethod
+    def count_number_of_applications_by_tour_id(tour_id: str):
+        try:
+            tour_application = TourApplicationService.count_number_of_applications_by_tour_id(tour_id)
+            return tour_application
+        except TourApplicationExceptionTour as e:
+            raise HTTPException(status_code=e.code, detail=e.message)
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
+
+    @staticmethod
+    def get_passenger_list_by_tour_id(tour_id: str):
+        try:
+            tour_application = TourApplicationService.get_passenger_list_by_tour_id(tour_id)
             return tour_application
         except TourApplicationExceptionTour as e:
             raise HTTPException(status_code=e.code, detail=e.message)
