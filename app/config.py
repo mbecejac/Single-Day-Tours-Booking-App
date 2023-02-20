@@ -17,6 +17,9 @@ class Settings(BaseSettings):
     MAIL_SERVER: str
     MAIL_FROM: str
 
+    DB_NAME_TEST: str
+    USE_TEST_DB: bool
+
     class Config:
         env_file = "./.env"
 

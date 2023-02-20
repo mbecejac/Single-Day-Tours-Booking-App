@@ -140,8 +140,13 @@ class TourService:
             with SessionLocal() as db:
                 tour_repository = TourRepository(db)
                 tour_guide_repository = TourGuideRepository(db)
+                tour = tour_repository.read_tour_by_id(tour_id)
                 tour_guide_check = tour_guide_repository.read_tour_guide_by_id(tour_guide_id)
-                if tour_guide_check.id == tour_guide_id:
+                tour_guide_language_check = tour_guide_repository.read_tour_guide_by_id(tour_guide_id)
+                if (
+                    tour_guide_check.id == tour_guide_id
+                    and tour.tour_language == tour_guide_language_check.language.language_name
+                ):
                     return tour_repository.update_tour_guide_on_tour(tour_id, tour_guide_id)
                 else:
                     raise TourGuideNotFoundException(message=f"Tour guide with ID: {tour_guide_id} not found", code=404)
