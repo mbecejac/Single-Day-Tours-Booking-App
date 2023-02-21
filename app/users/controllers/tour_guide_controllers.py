@@ -72,9 +72,9 @@ class TourGuideController:
             raise HTTPException(status_code=500, detail=str(e))
 
     @staticmethod
-    def update_tour_guide_is_employee(tour_guide_id: str):
+    def update_tour_guide_is_employee(tour_guide_id: str, is_employee: bool):
         try:
-            tour_guide = TourGuideService.update_tour_guide_is_employee(tour_guide_id)
+            tour_guide = TourGuideService.update_tour_guide_is_employee(tour_guide_id, is_employee)
             return tour_guide
         except TourGuideNotFoundException as e:
             raise HTTPException(status_code=e.code, detail=e.message)

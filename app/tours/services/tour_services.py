@@ -1,5 +1,5 @@
 from app.db import SessionLocal
-from app.tours.exceptions import BusCarrierNotFoundException, TourExceptionLanguage
+from app.tours.exceptions import BusCarrierNotFoundException, TourExceptionLanguage, TourNotFoundException
 from app.tours.repositories import BusCarrierRepository, TourRepository
 from app.users.exceptions import TourGuideNotFoundException
 from app.users.repositories import TourGuideRepository
@@ -16,14 +16,16 @@ class TourService:
         is_walking_tour: bool,
         tour_language: str,
         tour_guide_id: str,
-        bus_carrier_id: str = "b3919fc4-8820-4f3f-b9e6-96dbed2b2783",
+        bus_carrier_id: str = "b3919fc4-8820-4f3f-b9e6-96dbed2b2783",  # default bus carrier id is for walking tour
     ):
         try:
             with SessionLocal() as db:
                 tour_repository = TourRepository(db)
                 tour_guide_repository = TourGuideRepository(db)
+                # check if tour guide speaks the language provided for guiding the tour
                 tour_guide_language_check = tour_guide_repository.read_tour_guide_by_id(tour_guide_id)
-                if tour_guide_language_check.language.language_name == tour_language:
+                language_name = tour_guide_language_check.language.language_name
+                if tour_guide_language_check.language_id == tour_language:
                     return tour_repository.create_tour(
                         tour_name,
                         tour_date,
@@ -36,7 +38,7 @@ class TourService:
                         bus_carrier_id,
                     )
                 else:
-                    raise TourExceptionLanguage(message=f"Tour guide is not speaking {tour_language}", code=404)
+                    raise TourExceptionLanguage(message=f"Tour guide is not speaking {language_name}", code=404)
         except Exception as e:
             raise e
 
@@ -114,14 +116,27 @@ class TourService:
 
     @staticmethod
     def read_active_tours_by_date_location_language_and_price(
-        tour_date: str, location: str, language: str, price: float
+        tour_date: str = None, location: str = None, price: float = 1000
     ):
         try:
             with SessionLocal() as db:
                 tour_repository = TourRepository(db)
-                return tour_repository.read_active_tours_by_date_location_language_and_price(
-                    tour_date, location, language, price
-                )
+                return tour_repository.read_active_tours_by_date_location_language_and_price(tour_date, location)
+        except Exception as e:
+            raise e
+
+    @staticmethod
+    def read_tours_by_location_and_language(location: str, language: str):
+        try:
+            with SessionLocal() as db:
+                tour_repository = TourRepository(db)
+                tours_by_location = tour_repository.read_tours_by_location(location)
+                tours_by_language = tour_repository.read_tours_by_tour_language(language)
+                if location and language:
+                    return list(set(tours_by_location) & set(tours_by_language))
+                else:
+                    raise TourNotFoundException(message="Tour not found", code=404)
+
         except Exception as e:
             raise e
 

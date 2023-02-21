@@ -5,9 +5,16 @@ from app.tours.schemas import (
     BusCarrierSchema,
     BusCarrierSchemaInput,
     TourApplicationSchema,
+    TourApplicationSchemaCustomerUpdate,
     TourApplicationSchemaInput,
+    TourApplicationSchemaIsActiveUpdate,
+    TourApplicationSchemaIsPayedUpdate,
     TourSchema,
+    TourSchemaBusCarrierUpdate,
     TourSchemaInput,
+    TourSchemaIsActiveUpdate,
+    TourSchemaPreview,
+    TourSchemaTourGuideUpdate,
 )
 
 bus_carrier_router = APIRouter(prefix="/api/bus-carriers", tags=["Bus Carriers"])
@@ -76,49 +83,54 @@ def create_tour(tour: TourSchemaInput):
     )
 
 
-@tour_router.get("/get-all-tours", response_model=list[TourSchema])
+@tour_router.get("/get-all-tours", response_model=list[TourSchemaPreview])
 def get_all_tours():
     return TourController.get_all_tours()
 
 
-@tour_router.get("/get-tour-by-id", response_model=TourSchema)
+@tour_router.get("/get-tour-by-id", response_model=TourSchemaPreview)
 def get_tour_by_id(tour_id: str):
     return TourController.get_tour_by_id(tour_id)
 
 
-@tour_router.get("/get-tours-by-date", response_model=list[TourSchema])
+@tour_router.get("/get-tours-by-date", response_model=list[TourSchemaPreview])
 def get_tours_by_date(date: str):
     return TourController.get_tours_by_date(date)
 
 
-@tour_router.get("/get-tours-by-location", response_model=list[TourSchema])
+@tour_router.get("/get-tours-by-location", response_model=list[TourSchemaPreview])
 def get_tours_by_location(location: str):
     return TourController.get_tours_by_location(location)
 
 
-@tour_router.get("/get-tours-by-max-price", response_model=list[TourSchema])
+@tour_router.get("/get-tours-by-max-price", response_model=list[TourSchemaPreview])
 def get_tours_by_max_price(price: float):
     return TourController.get_tours_by_max_price(price)
 
 
-@tour_router.get("/get-walking-tours", response_model=list[TourSchema])
+@tour_router.get("/get-walking-tours", response_model=list[TourSchemaPreview])
 def get_walking_tours():
     return TourController.get_walking_tours()
 
 
-@tour_router.get("/get-tours-by-language", response_model=list[TourSchema])
+@tour_router.get("/get-tours-by-language", response_model=list[TourSchemaPreview])
 def get_tours_by_tour_language(language: str):
     return TourController.get_tours_by_tour_language(language)
 
 
-@tour_router.get("/get-active-tours", response_model=list[TourSchema])
+@tour_router.get("/get-active-tours", response_model=list[TourSchemaPreview])
 def get_active_tours():
     return TourController.get_active_tours()
 
 
-@tour_router.get("/get-active-tours-by-tour-parameters", response_model=list[TourSchema])
-def get_active_tours_by_tour_parameters(tour_date: str, location: str, language: str, price: float):
-    return TourController.get_active_tours_by_date_location_language_and_price(tour_date, location, language, price)
+@tour_router.get("/get-active-tours-by-tour-parameters", response_model=list[TourSchemaPreview])
+def get_active_tours_by_tour_parameters(tour_date: str = None, location: str = None, price: float = 1000):
+    return TourController.get_active_tours_by_date_location_language_and_price(tour_date, location, price)
+
+
+@tour_router.get("/get-tours-by-location-and language", response_model=list[TourSchemaPreview])
+def get_tours_by_location_and_language(location: str, language: str):
+    return TourController.get_tours_by_location_and_language(location, language)
 
 
 @tour_router.get(
@@ -131,22 +143,22 @@ def get_tour_by_tour_guide_id(tour_guide_id: str):
 @tour_router.put(
     "/update-tour-guide-on-tour", response_model=TourSchema
 )  # TODO Add dependencies JWTBearer(superuser, employee)
-def update_tour_guide_on_tour(tour_id: str, tour_guide_id: str):
-    return TourController.update_tour_guide_on_tour(tour_id, tour_guide_id)
+def update_tour_guide_on_tour(tour: TourSchemaTourGuideUpdate):
+    return TourController.update_tour_guide_on_tour(tour.id, tour.tour_guide_id)
 
 
 @tour_router.put(
     "/update-bus-carrier-on-tour", response_model=TourSchema
 )  # TODO Add dependencies JWTBearer(superuser, employee)
-def update_bus_carrier_on_tour(tour_id: str, bus_carrier_id: str):
-    return TourController.update_bus_carrier_on_tour(tour_id, bus_carrier_id)
+def update_bus_carrier_on_tour(tour: TourSchemaBusCarrierUpdate):
+    return TourController.update_bus_carrier_on_tour(tour.id, tour.bus_carrier_id)
 
 
 @tour_router.put(
     "/update-tour-is-active", response_model=TourSchema
 )  # TODO Add dependencies JWTBearer(superuser, employee)
-def update_tour_is_active(tour_id: str, is_active: bool):
-    return TourController.update_tour_is_active(tour_id, is_active)
+def update_tour_is_active(tour: TourSchemaIsActiveUpdate):
+    return TourController.update_tour_is_active(tour.id, tour.is_active)
 
 
 @tour_router.delete("/delete-tour-by-id")  # TODO Add dependencies JWTBearer(superuser, employee)
@@ -202,6 +214,27 @@ def get_all_tour_applications_by_tour_id(tour_id: str):
 
 
 @tour_application_router.get(
+    "/count-number-of-applications-on-tour"
+)  # TODO Add dependencies JWTBearer(superuser, employee, tour_guide)
+def count_number_of_applications_by_tour_id(tour_id: str):
+    return TourApplicationController.count_number_of_applications_by_tour_id(tour_id)
+
+
+@tour_application_router.get(
+    "/sort-tours-by-number-of-applications", response_model=list
+)  # TODO Add dependencies JWTBearer(superuser, employee)
+def sort_tours_by_number_of_applications_desc():
+    return TourApplicationController.sort_tours_by_number_of_applications_desc()
+
+
+@tour_application_router.get(
+    "/get-passenger-list-by-tour-id"
+)  # TODO Add dependencies JWTBearer(superuser, employee, tour_guide)
+def get_passenger_list_by_tour_id(tour_id: str):
+    return TourApplicationController.get_passenger_list_by_tour_id(tour_id)
+
+
+@tour_application_router.get(
     "/get-not-payed-tour-applications", response_model=list[TourApplicationSchema]
 )  # TODO Add dependencies JWTBearer(superuser, employee)
 def get_not_payed_tour_applications():
@@ -211,22 +244,22 @@ def get_not_payed_tour_applications():
 @tour_application_router.put(
     "/update-tour-application-is-payed", response_model=TourApplicationSchema
 )  # TODO Add dependencies JWTBearer(superuser, employee)
-def update_tour_application_is_payed_status(tour_app_id: str, is_payed: bool):
-    return TourApplicationController.update_tour_application_is_payed_status(tour_app_id, is_payed)
+def update_tour_application_is_payed_status(tour_app: TourApplicationSchemaIsPayedUpdate):
+    return TourApplicationController.update_tour_application_is_payed_status(tour_app.id, tour_app.is_payed)
 
 
 @tour_application_router.put(
     "/update-tour-application-is-active", response_model=TourApplicationSchema
 )  # TODO Add dependencies JWTBearer(superuser, employee)
-def update_tour_application_is_active_status(tour_app_id: str, is_active: bool):
-    return TourApplicationController.update_tour_application_is_active_status(tour_app_id, is_active)
+def update_tour_application_is_active_status(tour_app: TourApplicationSchemaIsActiveUpdate):
+    return TourApplicationController.update_tour_application_is_active_status(tour_app.id, tour_app.is_active)
 
 
 @tour_application_router.put(
-    "/change-custome-on-tour-application", response_model=TourApplicationSchema
+    "/change-customer-on-tour-application", response_model=TourApplicationSchema
 )  # TODO Add dependencies JWTBearer(superuser, employee)
-def change_customer_on_tour_application(tour_app_id: str, customer_id: str):
-    return TourApplicationController.change_customer_on_tour_application(tour_app_id, customer_id)
+def change_customer_on_tour_application(tour_app: TourApplicationSchemaCustomerUpdate):
+    return TourApplicationController.change_customer_on_tour_application(tour_app.id, tour_app.customer_id)
 
 
 @tour_application_router.delete("/delete-tour-application")  # TODO Add dependencies JWTBearer(superuser)

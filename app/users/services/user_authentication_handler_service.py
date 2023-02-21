@@ -20,5 +20,5 @@ def decode_jwt(token: str) -> Dict:
         decoded_token = jwt.decode(token, USER_SECRET, algorithms=[JWT_ALGORITHM])
         return decoded_token if decoded_token["expires"] >= time.time() else None
     except Exception as e:
-        print(e.__str__())
+        print(str(e))
         return {}

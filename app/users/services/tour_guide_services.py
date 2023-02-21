@@ -67,13 +67,13 @@ class TourGuideService:
                 language_check = language_repository.read_language_by_id(language_id)
                 if language_id == language_check.id:
                     return tour_guide_repository.update_tour_guide_language_id(tour_guide_id, language_id)
-                else:
-                    raise LanguageNotFoundException(message="Language not found", code=404)
+
+                raise LanguageNotFoundException(message="Language not found", code=404)
         except Exception as e:
             raise e
 
     @staticmethod
-    def update_tour_guide_is_employee(tour_guide_id: str):
+    def update_tour_guide_is_employee(tour_guide_id: str, is_employee: bool):
         try:
             with SessionLocal() as db:
                 tour_guide_repository = TourGuideRepository(db)
@@ -81,7 +81,7 @@ class TourGuideService:
                 tour_guide = tour_guide_repository.read_tour_guide_by_id(tour_guide_id)
                 check_is_employee = employee_repository.read_employee_by_user_id(tour_guide.user.id)
                 if check_is_employee:
-                    return tour_guide_repository.update_tour_guide_is_employee(tour_guide_id)
+                    return tour_guide_repository.update_tour_guide_is_employee(tour_guide_id, is_employee)
         except Exception as e:
             raise e
 

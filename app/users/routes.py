@@ -11,14 +11,20 @@ from app.users.controllers import (
 from app.users.schemas import (
     CustomerSchema,
     CustomerSchemaInput,
+    CustomerSchemaUpdate,
     EmployeeSchema,
     EmployeeSchemaInput,
     LanguageSchema,
     LanguageSchemaInput,
     TourGuideSchema,
     TourGuideSchemaInput,
+    TourGuideSchemaIsEmployeeUpdate,
+    TourGuideSchemaLanguageUpdate,
+    TourGuideSchemaUpdate,
     UserSchema,
     UserSchemaInput,
+    UserSchemaIsActiveUpdate,
+    UserSchemaIsSuperuserUpdate,
 )
 
 user_router = APIRouter(prefix="/api/users", tags=["Users"])
@@ -57,13 +63,13 @@ def get_user_by_email(email: str):
 
 
 @user_router.put("/update/is-active", response_model=UserSchema, dependencies=[Depends(JWTBearer("superuser"))])
-def update_user_is_active(user_id: str, is_active: bool):
-    return UserController.update_user_is_active(user_id, is_active)
+def update_user_is_active(user: UserSchemaIsActiveUpdate):
+    return UserController.update_user_is_active(user.id, user.is_active)
 
 
 @user_router.put("/update/is-superuser", response_model=UserSchema, dependencies=[Depends(JWTBearer("superuser"))])
-def update_user_is_superuser(user_id: str, is_superuser: bool):
-    return UserController.update_user_is_superuser(user_id, is_superuser)
+def update_user_is_superuser(user: UserSchemaIsSuperuserUpdate):
+    return UserController.update_user_is_superuser(user.id, user.is_superuser)
 
 
 @user_router.delete("/delete-user")  # TODO Add dependencies JWTBearer(superuser)
@@ -179,22 +185,24 @@ def get_tour_guide_by_name_or_last_name(name_lastname: str):
 @tour_guide_router.put(
     "/update-tour-guide-data", response_model=TourGuideSchema
 )  # TODO Add dependencies JWTBearer(superuser, employee)
-def update_tour_guide_data(tour_guide_id: str, name: str = None, last_name: str = None, phone_number: str = None):
-    return TourGuideController.update_tour_guide_data(tour_guide_id, name, last_name, phone_number)
+def update_tour_guide_data(tour_guide: TourGuideSchemaUpdate):
+    return TourGuideController.update_tour_guide_data(
+        tour_guide.id, tour_guide.name, tour_guide.last_name, tour_guide.phone_number
+    )
 
 
 @tour_guide_router.put(
     "/update-tour-guide-language", response_model=TourGuideSchema
 )  # TODO Add dependencies JWTBearer(superuser, employee)
-def update_tour_guide_language(tour_guide_id: str, language_id: str):
-    return TourGuideController.update_tour_guide_language(tour_guide_id, language_id)
+def update_tour_guide_language(tour_guide: TourGuideSchemaLanguageUpdate):
+    return TourGuideController.update_tour_guide_language(tour_guide.id, tour_guide.language_id)
 
 
 @tour_guide_router.put(
     "/update-tour-guide-is_employee", response_model=TourGuideSchema
 )  # TODO Add dependencies JWTBearer(superuser, employee)
-def update_tour_guide_is_employee(tour_guide_id: str):
-    return TourGuideController.update_tour_guide_is_employee(tour_guide_id)
+def update_tour_guide_is_employee(tour_guide: TourGuideSchemaIsEmployeeUpdate):
+    return TourGuideController.update_tour_guide_is_employee(tour_guide.id, tour_guide.is_employee)
 
 
 @tour_guide_router.delete("/delete-tour-guide")  # TODO Add dependencies JWTBearer(superuser)
@@ -244,16 +252,11 @@ def get_customer_by_name_or_lastname(name_lastname: str):
 
 @customer_router.post(
     "/update-customer-data", response_model=CustomerSchema
-)  # TODO Add dependencies (superuser, emoployee)
-def update_customer_data(
-    customer_id: str,
-    name: str = None,
-    last_name: str = None,
-    phone_number: str = None,
-    address: str = None,
-    city: str = None,
-):
-    return CustomerController.update_customer_data(customer_id, name, last_name, phone_number, address, city)
+)  # TODO Add dependencies (superuser, employee)
+def update_customer_data(customer: CustomerSchemaUpdate):
+    return CustomerController.update_customer_data(
+        customer.id, customer.name, customer.last_name, customer.phone_number, customer.address, customer.city
+    )
 
 
 @customer_router.delete("/delete-customer")

@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
@@ -11,6 +13,7 @@ from app.tours.exceptions import (
     TourNotFoundException,
 )
 from app.tours.models import Tour
+from app.users.models.languages import Language
 
 
 class TourRepository:
@@ -84,7 +87,7 @@ class TourRepository:
         return tours
 
     def read_tours_by_tour_language(self, language: str):
-        tours = self.db.query(Tour).filter(Tour.tour_language.ilike(f"%{language}%")).limit(20).all()
+        tours = self.db.query(Tour).join(Language).filter(Language.language_name.ilike(f"%{language}%")).limit(20).all()
         if not tours:
             raise TourExceptionLanguage(message=f"Tour language: {language} not found.", code=400)
         return tours
@@ -96,18 +99,29 @@ class TourRepository:
         return tours
 
     def read_active_tours_by_date_location_language_and_price(
-        self, tour_date: str = None, location: str = None, language: str = None, price: float = None
+        self, tour_date: str, location: str = None, price: float = 1000
     ):
-        tours = (
-            self.db.query(Tour).filter(Tour.tour_date == tour_date).all()
-            and self.db.query(Tour).filter(Tour.location.ilike(f"%{location}%")).all()
+        if tour_date is not None:
+            tours_date = (
+                self.db.query(Tour).filter(Tour.tour_date <= tour_date).all()
+                and self.db.query(Tour).filter(Tour.price <= price).all()
+                and self.db.query(Tour).filter(Tour.is_active == 1).all()
+                and self.db.query(Tour).filter(Tour.location.ilike(f"%{location}%")).all()
+            )
+            if not tours_date:
+                raise TourExceptionActive(message="Not active tours found.", code=400)
+            return tours_date
+
+        tours_no_date = (
+            self.db.query(Tour).filter(Tour.tour_date >= datetime.now()).all()
             and self.db.query(Tour).filter(Tour.price <= price).all()
-            and self.db.query(Tour).filter(Tour.tour_language.ilike(f"%{language}%")).all()
             and self.db.query(Tour).filter(Tour.is_active == 1).all()
-        )
-        if not tours:
+            and self.db.query(Tour).filter(Tour.location.ilike(f"%{location}%")).all()
+        )  # and self.db.query(Tour).filter(Tour.tour_language.ilike(f"%{language}%")).all()
+
+        if not tours_no_date:
             raise TourExceptionActive(message="Not active tours found.", code=400)
-        return tours
+        return tours_no_date
 
     def read_tours_by_tour_guide_id(self, tour_guide_id: str):
         tours = self.db.query(Tour).filter(Tour.tour_guide_id == tour_guide_id).limit(20).all()
@@ -138,6 +152,7 @@ class TourRepository:
                 raise TourNotFoundException(message=f"Tour with provided id: {tour_id} not found", code=400)
             if bus_carrier_id is not None:
                 tour.bus_carrier_id = bus_carrier_id
+                tour.is_walking_tour = False  # if bus carrier is engaged, is_walking_tour is False
             self.db.add(tour)
             self.db.commit()
             self.db.refresh(tour)

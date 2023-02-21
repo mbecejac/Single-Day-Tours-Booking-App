@@ -111,15 +111,25 @@ class TourController:
 
     @staticmethod
     def get_active_tours_by_date_location_language_and_price(
-        tour_date: str, location: str, language: str, price: float
+        tour_date: str = None, location: str = None, price: float = 1000
     ):
         try:
-            tours = TourService.read_active_tours_by_date_location_language_and_price(
-                tour_date, location, language, price
-            )
+            tours = TourService.read_active_tours_by_date_location_language_and_price(tour_date, location, price)
             return tours
         except TourExceptionActive as e:
             raise HTTPException(status_code=e.code, detail=e.message)
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
+
+    @staticmethod
+    def get_tours_by_location_and_language(location: str, language: str):
+        try:
+            tours = TourService.read_tours_by_location_and_language(location, language)
+            return tours
+
+        except TourNotFoundException as e:
+            raise HTTPException(status_code=e.code, detail=e.message)
+
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))
 
