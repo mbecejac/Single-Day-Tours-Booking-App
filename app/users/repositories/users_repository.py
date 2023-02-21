@@ -11,7 +11,7 @@ class UserRepository:
 
     def __init__(self, db: Session):
         """
-        Initialize the UserRepository with a database connection.
+        Initialize the UserRepository database connection.
 
         :param db: Session instance for database connection
         :type db: Session

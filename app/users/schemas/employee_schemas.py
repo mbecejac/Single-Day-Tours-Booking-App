@@ -1,3 +1,4 @@
+"""Employee related schemas"""
 from pydantic import BaseModel
 
 from app.users.schemas import UserSchema

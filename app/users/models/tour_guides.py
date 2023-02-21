@@ -1,3 +1,4 @@
+"""Tour guide related models"""
 from uuid import uuid4
 
 from sqlalchemy import Boolean, Column, ForeignKey, String, UniqueConstraint

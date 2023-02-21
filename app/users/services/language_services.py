@@ -1,11 +1,15 @@
+"""Language related services"""
 from app.db import SessionLocal
 from app.users.exceptions import LanguageExceptionName
 from app.users.repositories import LanguageRepository
 
 
 class LanguageService:
+    """Service for language management"""
+
     @staticmethod
     def create_language(language_name: str):
+        """Create a new language."""
         try:
             with SessionLocal() as db:
                 language_repository = LanguageRepository(db)
@@ -19,6 +23,7 @@ class LanguageService:
 
     @staticmethod
     def read_all_languages():
+        """Read all languages."""
         try:
             with SessionLocal() as db:
                 language_repository = LanguageRepository(db)
@@ -28,6 +33,7 @@ class LanguageService:
 
     @staticmethod
     def read_language_by_id(language_id: str):
+        """Read language by provided id."""
         try:
             with SessionLocal() as db:
                 language_repository = LanguageRepository(db)
@@ -37,6 +43,7 @@ class LanguageService:
 
     @staticmethod
     def read_language_by_name(language_name: str):
+        """Read language by provided name."""
         try:
             with SessionLocal() as db:
                 language_repository = LanguageRepository(db)
@@ -46,6 +53,7 @@ class LanguageService:
 
     @staticmethod
     def delete_language_by_id(language_id: str):
+        """Delete language by provided id."""
         try:
             with SessionLocal() as db:
                 language_repository = LanguageRepository(db)

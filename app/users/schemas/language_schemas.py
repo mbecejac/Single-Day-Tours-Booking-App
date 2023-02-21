@@ -1,3 +1,4 @@
+"""Language related schemas"""
 from pydantic import UUID4, BaseModel
 
 

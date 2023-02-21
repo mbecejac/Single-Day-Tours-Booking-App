@@ -1,3 +1,4 @@
+"""Email related services"""
 import asyncio
 
 from fastapi_mail import ConnectionConfig, FastMail, MessageSchema, MessageType
@@ -7,6 +8,8 @@ from app.config import settings
 
 
 class EmailService:
+    """Service for email management"""
+
     conf = ConnectionConfig(
         MAIL_USERNAME=settings.MAIL_USERNAME,
         MAIL_PASSWORD=settings.MAIL_PASSWORD,
@@ -19,6 +22,7 @@ class EmailService:
 
     @staticmethod
     def send_email_after_user_is_create(email: EmailStr):
+        """Send an email after new user is created"""
         html = """<p> Dear User,<br> Welcome.</p>"""
 
         message = MessageSchema(
