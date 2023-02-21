@@ -84,6 +84,16 @@ class TourApplicationController:
             raise HTTPException(status_code=500, detail=str(e))
 
     @staticmethod
+    def sort_tours_by_number_of_applications_desc():
+        try:
+            tour_application_sorted = TourApplicationService.sort_tours_by_number_of_applications_desc()
+            return tour_application_sorted
+        except TourApplicationExceptionTour as e:
+            raise HTTPException(status_code=e.code, detail=e.message)
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
+
+    @staticmethod
     def get_passenger_list_by_tour_id(tour_id: str):
         try:
             tour_application = TourApplicationService.get_passenger_list_by_tour_id(tour_id)

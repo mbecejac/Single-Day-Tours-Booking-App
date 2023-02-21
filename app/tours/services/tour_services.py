@@ -16,7 +16,7 @@ class TourService:
         is_walking_tour: bool,
         tour_language: str,
         tour_guide_id: str,
-        bus_carrier_id: str = "b3919fc4-8820-4f3f-b9e6-96dbed2b2783",  # default bus carrier id is false bus carrier
+        bus_carrier_id: str = "b3919fc4-8820-4f3f-b9e6-96dbed2b2783",  # default bus carrier id is for walking tour
     ):
         try:
             with SessionLocal() as db:

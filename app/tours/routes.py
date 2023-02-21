@@ -210,6 +210,13 @@ def count_number_of_applications_by_tour_id(tour_id: str):
 
 
 @tour_application_router.get(
+    "/sort-tours-by-number-of-applications", response_model=list
+)  # TODO Add dependencies JWTBearer(superuser, employee)
+def sort_tours_by_number_of_applications_desc():
+    return TourApplicationController.sort_tours_by_number_of_applications_desc()
+
+
+@tour_application_router.get(
     "/get-passenger-list-by-tour-id"
 )  # TODO Add dependencies JWTBearer(superuser, employee, tour_guide)
 def get_passenger_list_by_tour_id(tour_id: str):
@@ -238,7 +245,7 @@ def update_tour_application_is_active_status(tour_app_id: str, is_active: bool):
 
 
 @tour_application_router.put(
-    "/change-custome-on-tour-application", response_model=TourApplicationSchema
+    "/change-customer-on-tour-application", response_model=TourApplicationSchema
 )  # TODO Add dependencies JWTBearer(superuser, employee)
 def change_customer_on_tour_application(tour_app_id: str, customer_id: str):
     return TourApplicationController.change_customer_on_tour_application(tour_app_id, customer_id)

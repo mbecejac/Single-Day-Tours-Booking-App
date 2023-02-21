@@ -138,6 +138,7 @@ class TourRepository:
                 raise TourNotFoundException(message=f"Tour with provided id: {tour_id} not found", code=400)
             if bus_carrier_id is not None:
                 tour.bus_carrier_id = bus_carrier_id
+                tour.is_walking_tour = False  # if bus carrier is engaged, is_walking_tour is False
             self.db.add(tour)
             self.db.commit()
             self.db.refresh(tour)

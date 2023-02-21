@@ -81,6 +81,21 @@ class TourApplicationService:
             raise e
 
     @staticmethod
+    def sort_tours_by_number_of_applications_desc():
+        try:
+            with SessionLocal() as db:
+                tours_repository = TourRepository(db)
+                tour_application_repository = TourApplicationRepository(db)
+                tours = tours_repository.read_all_tours()
+                tours_with_num_of_apps = []
+                for tour in tours:
+                    num_of_application = tour_application_repository.count_number_of_applications_by_tour_id(tour.id)
+                    tours_with_num_of_apps.append([tour.id, tour.tour_name, tour.tour_date, num_of_application])
+                return sorted(tours_with_num_of_apps, key=lambda x: x[3], reverse=True)
+        except Exception as e:
+            raise e
+
+    @staticmethod
     def get_passenger_list_by_tour_id(tour_id: str):
         try:
             with SessionLocal() as db:
