@@ -1,5 +1,5 @@
 from app.db import SessionLocal
-from app.tours.exceptions import BusCarrierNotFoundException, TourExceptionLanguage
+from app.tours.exceptions import BusCarrierNotFoundException, TourExceptionLanguage, TourNotFoundException
 from app.tours.repositories import BusCarrierRepository, TourRepository
 from app.users.exceptions import TourGuideNotFoundException
 from app.users.repositories import TourGuideRepository
@@ -122,6 +122,21 @@ class TourService:
             with SessionLocal() as db:
                 tour_repository = TourRepository(db)
                 return tour_repository.read_active_tours_by_date_location_language_and_price(tour_date, location)
+        except Exception as e:
+            raise e
+
+    @staticmethod
+    def read_tours_by_location_and_language(location: str, language: str):
+        try:
+            with SessionLocal() as db:
+                tour_repository = TourRepository(db)
+                tours_by_location = tour_repository.read_tours_by_location(location)
+                tours_by_language = tour_repository.read_tours_by_tour_language(language)
+                if location and language:
+                    return list(set(tours_by_location) & set(tours_by_language))
+                else:
+                    raise TourNotFoundException(message="Tour not found", code=404)
+
         except Exception as e:
             raise e
 

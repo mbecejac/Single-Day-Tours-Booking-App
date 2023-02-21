@@ -122,6 +122,11 @@ def get_active_tours_by_tour_parameters(tour_date: str = None, location: str = N
     return TourController.get_active_tours_by_date_location_language_and_price(tour_date, location, price)
 
 
+@tour_router.get("/get-tours-by-location-and language", response_model=list[TourSchemaPreview])
+def get_tours_by_location_and_language(location: str, language: str):
+    return TourController.get_tours_by_location_and_language(location, language)
+
+
 @tour_router.get(
     "/get-tour-by-tour-guide-id", response_model=list[TourSchema]
 )  # TODO Add dependencies JWTBearer(superuser, employee)

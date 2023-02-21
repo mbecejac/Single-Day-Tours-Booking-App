@@ -122,6 +122,18 @@ class TourController:
             raise HTTPException(status_code=500, detail=str(e))
 
     @staticmethod
+    def get_tours_by_location_and_language(location: str, language: str):
+        try:
+            tours = TourService.read_tours_by_location_and_language(location, language)
+            return tours
+
+        except TourNotFoundException as e:
+            raise HTTPException(status_code=e.code, detail=e.message)
+
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
+
+    @staticmethod
     def get_tour_by_tour_guide_id(tour_guide_id: str):
         try:
             tour = TourService.read_tours_by_tour_guide_id(tour_guide_id)
