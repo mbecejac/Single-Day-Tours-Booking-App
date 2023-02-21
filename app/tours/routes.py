@@ -118,8 +118,8 @@ def get_active_tours():
 
 
 @tour_router.get("/get-active-tours-by-tour-parameters", response_model=list[TourSchemaPreview])
-def get_active_tours_by_tour_parameters(tour_date: str, location: str, language: str, price: float):
-    return TourController.get_active_tours_by_date_location_language_and_price(tour_date, location, language, price)
+def get_active_tours_by_tour_parameters(tour_date: str = None, location: str = None, price: float = 1000):
+    return TourController.get_active_tours_by_date_location_language_and_price(tour_date, location, price)
 
 
 @tour_router.get(

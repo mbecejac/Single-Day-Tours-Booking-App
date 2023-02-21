@@ -116,14 +116,12 @@ class TourService:
 
     @staticmethod
     def read_active_tours_by_date_location_language_and_price(
-        tour_date: str, location: str, language: str, price: float
+        tour_date: str = None, location: str = None, price: float = 1000
     ):
         try:
             with SessionLocal() as db:
                 tour_repository = TourRepository(db)
-                return tour_repository.read_active_tours_by_date_location_language_and_price(
-                    tour_date, location, language, price
-                )
+                return tour_repository.read_active_tours_by_date_location_language_and_price(tour_date, location)
         except Exception as e:
             raise e
 
