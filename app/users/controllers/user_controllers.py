@@ -1,3 +1,4 @@
+"""User related controllers"""
 from fastapi import HTTPException
 from pydantic import EmailStr
 from sqlalchemy.exc import IntegrityError
@@ -7,8 +8,11 @@ from app.users.services import UserService, sign_jwt
 
 
 class UserController:
+    """Controller for user management"""
+
     @staticmethod
     def create_user(email: EmailStr, password: str):
+        """Create a new user"""
         try:
             user = UserService.create_user(email, password)
             # EmailService.send_email_after_user_is_create(email)
@@ -21,6 +25,7 @@ class UserController:
 
     @staticmethod
     def create_super_user(email: str, password: str):
+        """Create a new superuser"""
         try:
             super_user = UserService.create_super_user(email, password)
             return super_user
@@ -31,6 +36,7 @@ class UserController:
 
     @staticmethod
     def login_user(email: str, password: str):
+        """User login by email and password"""
         try:
             user = UserService.login_user(email, password)
             if user.is_superuser:
@@ -43,10 +49,12 @@ class UserController:
 
     @staticmethod
     def get_all_users():
+        """Get all users"""
         return UserService.read_all_users()
 
     @staticmethod
     def get_user_by_id(user_id: str):
+        """Get user by provided id"""
         try:
             user = UserService.read_user_by_id(user_id)
             return user
@@ -57,6 +65,7 @@ class UserController:
 
     @staticmethod
     def get_user_by_email(email: str):
+        """Get user by provided email"""
         try:
             user = UserService.read_user_by_email(email)
             return user
@@ -67,6 +76,7 @@ class UserController:
 
     @staticmethod
     def update_user_is_active(user_id: str, is_active: bool):
+        """Update user is_active status"""
         try:
             UserService.update_user_is_active(user_id, is_active)
         except Exception as e:
@@ -74,6 +84,7 @@ class UserController:
 
     @staticmethod
     def update_user_is_superuser(user_id: str, is_superuser: bool):
+        """Update user is_superuser status"""
         try:
             UserService.update_user_is_superuser(user_id, is_superuser)
         except Exception as e:
@@ -81,6 +92,7 @@ class UserController:
 
     @staticmethod
     def delete_user_by_id(user_id: str):
+        """Delete user by provided id"""
         try:
             UserService.delete_user_by_id(user_id)
             return {"message": f"User with id: {user_id} is deleted"}

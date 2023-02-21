@@ -1,3 +1,4 @@
+"""User authentication controller"""
 from fastapi import HTTPException, Request
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
@@ -5,6 +6,8 @@ from app.users.services import decode_jwt
 
 
 class JWTBearer(HTTPBearer):
+    """HTTPBearer subclass checks for a valid JWT token with a specified role"""
+
     def __init__(self, role: str, auto_error: bool = True):
         super(JWTBearer, self).__init__(auto_error=auto_error)
         self.role = role
@@ -25,6 +28,7 @@ class JWTBearer(HTTPBearer):
 
     @staticmethod
     def verify_jwt(jwtoken: str) -> dict:
+        """Verifies a JWT token"""
         is_token_valid: bool = False
         try:
             payload = decode_jwt(jwtoken)

@@ -1,3 +1,4 @@
+"""Employee related controllers"""
 from fastapi import HTTPException
 
 from app.users.exceptions import EmployeeExceptionId, EmployeeNotFoundException
@@ -5,8 +6,11 @@ from app.users.services import EmployeeService
 
 
 class EmployeeController:
+    """Controller for employee management"""
+
     @staticmethod
     def create_employee(user_id: str):
+        """Create a new employee"""
         try:
             employee = EmployeeService.create_employee(user_id)
             return employee
@@ -17,10 +21,12 @@ class EmployeeController:
 
     @staticmethod
     def get_all_employees():
+        """Get all employees"""
         return EmployeeService.read_all_employees()
 
     @staticmethod
     def get_employee_by_id(employee_id: int):
+        """Get employee by provided employee id"""
         try:
             employee = EmployeeService.read_employee_by_id(employee_id)
             return employee
@@ -31,6 +37,7 @@ class EmployeeController:
 
     @staticmethod
     def get_employee_by_user_id(user_id: str):
+        """Get employee by provided user id"""
         try:
             employee = EmployeeService.read_employee_by_user_id(user_id)
             return employee
@@ -41,6 +48,7 @@ class EmployeeController:
 
     @staticmethod
     def delete_employee_by_id(employee_id: str):
+        """Delete employee by provided employee id"""
         try:
             EmployeeService.delete_employee_by_id(employee_id)
             return {"message": f"Employee with id: {employee_id} is deleted"}

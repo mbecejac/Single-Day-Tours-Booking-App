@@ -1,3 +1,4 @@
+"""Customer related repositories"""
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
@@ -6,10 +7,19 @@ from app.users.models import Customer
 
 
 class CustomerRepository:
+    """Repository for Customer management."""
+
     def __init__(self, db: Session):
+        """
+        Initialize the EmployeeRepository database connection.
+
+        :param db: Session instance for database connection
+        :type db: Session
+        """
         self.db = db
 
     def create_customer(self, name: str, last_name: str, phone_number: str, address: str, city: str, user_id: str):
+        """Create new customer."""
         try:
             customer = Customer(name, last_name, phone_number, address, city, user_id)
             self.db.add(customer)
@@ -22,21 +32,25 @@ class CustomerRepository:
             raise e
 
     def read_all_customers(self):
+        """Read all customers."""
         return self.db.query(Customer).limit(20).all()
 
     def read_customer_by_id(self, customer_id: str):
+        """Read customer by provided id."""
         customer = self.db.query(Customer).filter(Customer.id == customer_id).first()
         if customer is None:
             raise CustomerNotFoundException(message=f"Customer with provided id: {customer_id} not found", code=400)
         return customer
 
     def read_customer_by_user_id(self, user_id: str):
+        """Read customer by provided user id."""
         customer = self.db.query(Customer).filter(Customer.user_id == user_id).first()
         if customer is None:
             raise CustomerNotFoundException(message=f"Customer with provided user id: {user_id} not found", code=400)
         return customer
 
     def read_customer_by_name_or_lastname(self, name_lastname: str):
+        """Read customer by provided name or lastname."""
         try:
             customers = (
                 self.db.query(Customer).filter(Customer.name.ilike(f"%{name_lastname}%")).all()
@@ -59,6 +73,7 @@ class CustomerRepository:
         address: str = None,
         city: str = None,
     ):
+        """Update customer data: name, last name, phone_number, address, city."""
         try:
             customer = self.db.query(Customer).filter(Customer.id == customer_id).first()
             if customer is None:
@@ -81,6 +96,7 @@ class CustomerRepository:
             raise e
 
     def delete_customer_by_id(self, customer_id: str):
+        """Delete customer by provided id."""
         try:
             customer = self.db.query(Customer).filter(Customer.id == customer_id).first()
             if customer is None:
