@@ -90,14 +90,14 @@ class TourGuideRepository:
         except Exception as e:
             raise e
 
-    def update_tour_guide_is_employee(self, tour_guide_id: str):
+    def update_tour_guide_is_employee(self, tour_guide_id: str, is_employee: bool):
         try:
             tour_guide = self.db.query(TourGuide).filter(TourGuide.id == tour_guide_id).first()
             if tour_guide is None:
                 raise TourGuideNotFoundException(
                     message=f"Tour guide with provided id: {tour_guide_id} not found", code=400
                 )
-            tour_guide.is_employee = 1
+            tour_guide.is_employee = is_employee
             self.db.add(tour_guide)
             self.db.commit()
             self.db.refresh(tour_guide)

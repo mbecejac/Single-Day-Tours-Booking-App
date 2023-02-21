@@ -147,7 +147,12 @@ class TourApplicationService:
         try:
             with SessionLocal() as db:
                 tour_application_repository = TourApplicationRepository(db)
-                return tour_application_repository.change_customer_on_tour_application(tour_app_id, customer_id)
+                customer_repository = CustomerRepository(db)
+                customer_check = customer_repository.read_customer_by_id(customer_id)
+                if customer_check is not None:
+                    return tour_application_repository.change_customer_on_tour_application(tour_app_id, customer_id)
+                else:
+                    raise CustomerNotFoundException(message=f"Customer with ID: {customer_id} not found.", code=404)
         except Exception as e:
             raise e
 

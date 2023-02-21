@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import UUID4, BaseModel
 
 from app.tours.schemas.tour_schemas import TourSchema
@@ -23,3 +25,18 @@ class TourApplicationSchemaInput(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class TourApplicationSchemaIsPayedUpdate(BaseModel):
+    id: Optional[str]
+    is_payed: Optional[bool]
+
+
+class TourApplicationSchemaIsActiveUpdate(BaseModel):
+    id: Optional[str]
+    is_active: Optional[bool]
+
+
+class TourApplicationSchemaCustomerUpdate(BaseModel):
+    id: Optional[str]
+    customer_id: Optional[str]

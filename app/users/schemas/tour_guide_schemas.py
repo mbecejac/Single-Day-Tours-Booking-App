@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import UUID4, BaseModel
 
 from app.users.schemas import LanguageSchema, UserSchema
@@ -24,6 +26,34 @@ class TourGuideSchemaInput(BaseModel):
     phone_number: str
     user_id: str
     language_id: str
+
+    class Config:
+        orm_mode = True
+
+
+class TourGuideSchemaUpdate(BaseModel):
+    id: Optional[str]
+    name: Optional[str]
+    last_name: Optional[str]
+    phone_number: Optional[str]
+    language_id: Optional[str]
+    is_employee: Optional[bool]
+
+    class Config:
+        orm_mode = True
+
+
+class TourGuideSchemaLanguageUpdate(BaseModel):
+    id: Optional[str]
+    language_id: Optional[str]
+
+    class Config:
+        orm_mode = True
+
+
+class TourGuideSchemaIsEmployeeUpdate(BaseModel):
+    id: Optional[str]
+    is_employee: Optional[bool]
 
     class Config:
         orm_mode = True

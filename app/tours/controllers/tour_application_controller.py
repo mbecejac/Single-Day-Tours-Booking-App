@@ -140,7 +140,7 @@ class TourApplicationController:
             return tour_application
         except TourApplicationNotFoundException as e:
             raise HTTPException(status_code=e.code, detail=e.message)
-        except TourApplicationExceptionCustomer as e:
+        except CustomerNotFoundException as e:
             raise HTTPException(status_code=e.code, detail=e.message)
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))

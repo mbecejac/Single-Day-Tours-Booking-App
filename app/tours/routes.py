@@ -5,10 +5,16 @@ from app.tours.schemas import (
     BusCarrierSchema,
     BusCarrierSchemaInput,
     TourApplicationSchema,
+    TourApplicationSchemaCustomerUpdate,
     TourApplicationSchemaInput,
+    TourApplicationSchemaIsActiveUpdate,
+    TourApplicationSchemaIsPayedUpdate,
     TourSchema,
+    TourSchemaBusCarrierUpdate,
     TourSchemaInput,
+    TourSchemaIsActiveUpdate,
     TourSchemaPreview,
+    TourSchemaTourGuideUpdate,
 )
 
 bus_carrier_router = APIRouter(prefix="/api/bus-carriers", tags=["Bus Carriers"])
@@ -137,22 +143,22 @@ def get_tour_by_tour_guide_id(tour_guide_id: str):
 @tour_router.put(
     "/update-tour-guide-on-tour", response_model=TourSchema
 )  # TODO Add dependencies JWTBearer(superuser, employee)
-def update_tour_guide_on_tour(tour_id: str, tour_guide_id: str):
-    return TourController.update_tour_guide_on_tour(tour_id, tour_guide_id)
+def update_tour_guide_on_tour(tour: TourSchemaTourGuideUpdate):
+    return TourController.update_tour_guide_on_tour(tour.id, tour.tour_guide_id)
 
 
 @tour_router.put(
     "/update-bus-carrier-on-tour", response_model=TourSchema
 )  # TODO Add dependencies JWTBearer(superuser, employee)
-def update_bus_carrier_on_tour(tour_id: str, bus_carrier_id: str):
-    return TourController.update_bus_carrier_on_tour(tour_id, bus_carrier_id)
+def update_bus_carrier_on_tour(tour: TourSchemaBusCarrierUpdate):
+    return TourController.update_bus_carrier_on_tour(tour.id, tour.bus_carrier_id)
 
 
 @tour_router.put(
     "/update-tour-is-active", response_model=TourSchema
 )  # TODO Add dependencies JWTBearer(superuser, employee)
-def update_tour_is_active(tour_id: str, is_active: bool):
-    return TourController.update_tour_is_active(tour_id, is_active)
+def update_tour_is_active(tour: TourSchemaIsActiveUpdate):
+    return TourController.update_tour_is_active(tour.id, tour.is_active)
 
 
 @tour_router.delete("/delete-tour-by-id")  # TODO Add dependencies JWTBearer(superuser, employee)
@@ -238,22 +244,22 @@ def get_not_payed_tour_applications():
 @tour_application_router.put(
     "/update-tour-application-is-payed", response_model=TourApplicationSchema
 )  # TODO Add dependencies JWTBearer(superuser, employee)
-def update_tour_application_is_payed_status(tour_app_id: str, is_payed: bool):
-    return TourApplicationController.update_tour_application_is_payed_status(tour_app_id, is_payed)
+def update_tour_application_is_payed_status(tour_app: TourApplicationSchemaIsPayedUpdate):
+    return TourApplicationController.update_tour_application_is_payed_status(tour_app.id, tour_app.is_payed)
 
 
 @tour_application_router.put(
     "/update-tour-application-is-active", response_model=TourApplicationSchema
 )  # TODO Add dependencies JWTBearer(superuser, employee)
-def update_tour_application_is_active_status(tour_app_id: str, is_active: bool):
-    return TourApplicationController.update_tour_application_is_active_status(tour_app_id, is_active)
+def update_tour_application_is_active_status(tour_app: TourApplicationSchemaIsActiveUpdate):
+    return TourApplicationController.update_tour_application_is_active_status(tour_app.id, tour_app.is_active)
 
 
 @tour_application_router.put(
     "/change-customer-on-tour-application", response_model=TourApplicationSchema
 )  # TODO Add dependencies JWTBearer(superuser, employee)
-def change_customer_on_tour_application(tour_app_id: str, customer_id: str):
-    return TourApplicationController.change_customer_on_tour_application(tour_app_id, customer_id)
+def change_customer_on_tour_application(tour_app: TourApplicationSchemaCustomerUpdate):
+    return TourApplicationController.change_customer_on_tour_application(tour_app.id, tour_app.customer_id)
 
 
 @tour_application_router.delete("/delete-tour-application")  # TODO Add dependencies JWTBearer(superuser)

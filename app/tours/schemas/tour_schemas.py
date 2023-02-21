@@ -1,4 +1,5 @@
 from datetime import date
+from typing import Optional
 
 from pydantic import UUID4, BaseModel
 
@@ -54,3 +55,18 @@ class TourSchemaPreview(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class TourSchemaTourGuideUpdate(BaseModel):
+    id: Optional[str]
+    tour_guide_id: Optional[str]
+
+
+class TourSchemaBusCarrierUpdate(BaseModel):
+    id: Optional[str]
+    bus_carrier_id: Optional[str]
+
+
+class TourSchemaIsActiveUpdate(BaseModel):
+    id: Optional[str]
+    is_active: Optional[bool]
