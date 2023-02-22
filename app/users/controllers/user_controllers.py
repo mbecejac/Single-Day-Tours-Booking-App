@@ -78,9 +78,10 @@ class UserController:
     def update_user_is_active(user_id: str, is_active: bool):
         """Update user is_active status"""
         try:
-            UserService.update_user_is_active(user_id, is_active)
+            user = UserService.update_user_is_active(user_id, is_active)
+            return user
         except UserNotFoundException as e:
-            raise HTTPException(status_code=500, detail=str(e))
+            raise HTTPException(status_code=e.code, detail=str(e))
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))
 
@@ -88,9 +89,10 @@ class UserController:
     def update_user_is_superuser(user_id: str, is_superuser: bool):
         """Update user is_superuser status"""
         try:
-            UserService.update_user_is_superuser(user_id, is_superuser)
+            user = UserService.update_user_is_superuser(user_id, is_superuser)
+            return user
         except UserNotFoundException as e:
-            raise HTTPException(status_code=500, detail=str(e))
+            raise HTTPException(status_code=e.code, detail=str(e))
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))
 
