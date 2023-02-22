@@ -35,7 +35,7 @@ def create_user(user: UserSchemaInput):
     return UserController.create_user(user.email, user.password)
 
 
-@user_router.post("/add-new-super-user", response_model=UserSchema)  # dependencies=[Depends(JWTBearer("superuser"))])
+@user_router.post("/add-new-super-user", response_model=UserSchema, dependencies=[Depends(JWTBearer("superuser"))])
 def create_superuser(user: UserSchemaInput):
     return UserController.create_super_user(user.email, user.password)
 
@@ -45,9 +45,7 @@ def user_login(user: UserSchemaInput):
     return UserController.login_user(user.email, user.password)
 
 
-@user_router.get(
-    "/get-all-users", response_model=list[UserSchema]
-)  # TODO Add dependencies JWTBearer(superuser, employee)
+@user_router.get("/get-all-users", response_model=list[UserSchema], dependencies=[Depends(JWTBearer("superuser"))])
 def get_all_users():
     return UserController.get_all_users()
 

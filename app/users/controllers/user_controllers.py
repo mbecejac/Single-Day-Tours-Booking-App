@@ -41,7 +41,7 @@ class UserController:
             user = UserService.login_user(email, password)
             if user.is_superuser:
                 return sign_jwt(user.id, "superuser")
-            return sign_jwt(user.id, "not_superuser")
+            return sign_jwt(user.id, "common_user")
         except UserInvalidPassword as e:
             raise HTTPException(status_code=e.code, detail=e.message)
         except Exception as e:
@@ -79,6 +79,8 @@ class UserController:
         """Update user is_active status"""
         try:
             UserService.update_user_is_active(user_id, is_active)
+        except UserNotFoundException as e:
+            raise HTTPException(status_code=500, detail=str(e))
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))
 
@@ -87,6 +89,8 @@ class UserController:
         """Update user is_superuser status"""
         try:
             UserService.update_user_is_superuser(user_id, is_superuser)
+        except UserNotFoundException as e:
+            raise HTTPException(status_code=500, detail=str(e))
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))
 
