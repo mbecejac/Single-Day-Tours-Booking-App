@@ -54,7 +54,7 @@ def get_all_users():
 
 
 @user_router.get(
-    "/get-user/id", response_model=list[UserSchema], dependencies=[Depends(JWTBearer(["employee", "superuser"]))]
+    "/get-user/id", response_model=UserSchema, dependencies=[Depends(JWTBearer(["employee", "superuser"]))]
 )
 def get_user_by_id(user_id: str):
     return UserController.get_user_by_id(user_id)
