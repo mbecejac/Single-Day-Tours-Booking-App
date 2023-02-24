@@ -37,3 +37,14 @@ class UserSchemaIsSuperuserUpdate(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class UserSchemaUpdate(BaseModel):
+    id: Optional[UUID4]
+    email: Optional[EmailStr]
+    password: Optional[str]
+    is_active: Optional[bool]
+    is_superuser: Optional[bool]
+
+    class Config:
+        orm_mode = True

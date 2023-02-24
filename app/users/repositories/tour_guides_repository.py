@@ -2,7 +2,7 @@
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from app.users.exceptions import TourGuideExceptionName, TourGuideNotFoundException, UserNotFoundException
+from app.users.exceptions import TourGuideExceptionName, TourGuideNotFoundException
 from app.users.models import TourGuide
 
 
@@ -48,7 +48,7 @@ class TourGuideRepository:
         """Read tour guide by provided user id."""
         tour_guide = self.db.query(TourGuide).filter(TourGuide.user_id == user_id).first()
         if tour_guide is None:
-            raise UserNotFoundException(message=f"Tour guide with provided user id: {user_id} not found", code=400)
+            raise TourGuideNotFoundException(message=f"Tour guide with provided user id: {user_id} not found", code=400)
         return tour_guide
 
     def read_tour_guide_by_name_or_lastname(self, name_lastname: str):

@@ -45,8 +45,8 @@ class EmployeeRepository:
     def read_employee_by_user_id(self, user_id: str):
         """Read employee by provided user id"""
         employee = self.db.query(Employee).filter(Employee.user_id == user_id).first()
-        # if employee is None:
-        #     raise UserNotFoundException(message=f"Employee with provided user id: {user_id} not found", code=400)
+        if employee is None:
+            raise EmployeeNotFoundException(message=f"Employee with provided user id: {user_id} not found", code=400)
         return employee
 
     def delete_employee_by_id(self, employee_id: str):
