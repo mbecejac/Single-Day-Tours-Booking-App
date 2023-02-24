@@ -49,9 +49,9 @@ class UserRepository:
     def read_user_by_id(self, user_id: str):
         """Read a user by id."""
         user = self.db.query(User).filter(User.id == user_id).first()
-        if user is None:
-            raise UserNotFoundException(message=f"User with provided id: {user_id} not found", code=400)
-        return user
+        if user:
+            return user
+        raise UserNotFoundException(message=f"User with provided id: {user_id} not found", code=400)
 
     def read_user_by_email(self, email: str):
         """Read a user by email."""
@@ -64,11 +64,13 @@ class UserRepository:
         """Update is_active status of a user."""
         try:
             user = self.db.query(User).filter(User.id == user_id).first()
-            user.is_active = is_active
-            self.db.add(user)
-            self.db.commit()
-            self.db.refresh(user)
-            return user
+            if user:
+                user.is_active = is_active
+                self.db.add(user)
+                self.db.commit()
+                self.db.refresh(user)
+                return user
+            raise UserNotFoundException(message=f"User with provided id: {user_id} not found", code=400)
         except Exception as e:
             raise e
 
@@ -76,11 +78,13 @@ class UserRepository:
         """Update is_superuser status of a user."""
         try:
             user = self.db.query(User).filter(User.id == user_id).first()
-            user.is_superuser = is_superuser
-            self.db.add(user)
-            self.db.commit()
-            self.db.refresh(user)
-            return user
+            if user:
+                user.is_superuser = is_superuser
+                self.db.add(user)
+                self.db.commit()
+                self.db.refresh(user)
+                return user
+            raise UserNotFoundException(message=f"User with provided id: {user_id} not found", code=400)
         except Exception as e:
             raise e
 

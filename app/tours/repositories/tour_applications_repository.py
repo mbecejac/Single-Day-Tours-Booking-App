@@ -30,7 +30,7 @@ class TourApplicationRepository:
         return self.db.query(TourApplication).limit(20).all()
 
     def read_tour_application_by_id(self, tour_app_id: str):
-        tour_application = self.db.query(TourApplication).filter(TourApplication.id == tour_app_id).limit(20).all()
+        tour_application = self.db.query(TourApplication).filter(TourApplication.id == tour_app_id).first()
         if tour_application is None:
             raise TourApplicationNotFoundException(
                 message=f"Tour application with provided ID: {tour_app_id} not found.", code=400

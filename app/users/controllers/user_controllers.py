@@ -4,7 +4,7 @@ from pydantic import EmailStr
 from sqlalchemy.exc import IntegrityError
 
 from app.users.exceptions import UserInvalidPassword, UserNotFoundException
-from app.users.services import UserService, sign_jwt
+from app.users.services import EmployeeService, TourGuideService, UserService, sign_jwt
 
 
 class UserController:
@@ -41,6 +41,12 @@ class UserController:
             user = UserService.login_user(email, password)
             if user.is_superuser:
                 return sign_jwt(user.id, "superuser")
+            employee = EmployeeService.read_employee_by_user_id(user.id)
+            if employee:
+                return sign_jwt(user.id, "employee")
+            tour_guide = TourGuideService.read_tour_guide_by_user_id(user.id)
+            if tour_guide:
+                return sign_jwt(user.id, "tour_guide")
             return sign_jwt(user.id, "common_user")
         except UserInvalidPassword as e:
             raise HTTPException(status_code=e.code, detail=e.message)
@@ -79,7 +85,9 @@ class UserController:
         """Update user is_active status"""
         try:
             user = UserService.update_user_is_active(user_id, is_active)
-            return user
+            if user:
+                return user
+            raise UserNotFoundException(message="NOT FOUND")
         except UserNotFoundException as e:
             raise HTTPException(status_code=e.code, detail=str(e))
         except Exception as e:
@@ -90,7 +98,9 @@ class UserController:
         """Update user is_superuser status"""
         try:
             user = UserService.update_user_is_superuser(user_id, is_superuser)
-            return user
+            if user:
+                return user
+            raise UserNotFoundException(message="NOT FOUND")
         except UserNotFoundException as e:
             raise HTTPException(status_code=e.code, detail=str(e))
         except Exception as e:
