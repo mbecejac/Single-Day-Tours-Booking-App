@@ -10,12 +10,6 @@ DB_NAME=project2_db
 USER_SECRET = secret_user_123
 ALGORITHM = HS256
 
-MAIL_USERNAME=test@mbec1.yunethosting.rs
-MAIL_PASSWORD=Test0230+
-MAIL_PORT=465
-MAIL_SERVER=mail.mbec1.yunethosting.rs
-
-MAIL_FROM=test@mbec1.yunethosting.rs
 
 DB_NAME_TEST = project2_db_test
 USE_TEST_DB = False
