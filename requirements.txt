@@ -10,5 +10,5 @@ PYMYSQL~=1.0.2
 pytest
 SQLAlchemy==2.0.1
 sqlalchemy-utils
-starlette~=0.22.0
+starlette>=0.40.0
 uvicorn~=0.20.0
